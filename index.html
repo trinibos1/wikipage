@@ -84,8 +84,34 @@
             color: var(--primary-bg); /* Dark text on green hover */
         }
 
-        /* Removed dropdown specific styles as per request */
-        /* .sub-nav, .has-dropdown, .dropdown-trigger styles are removed or reverted */
+        /* Language Selector Styles */
+        .language-selector {
+            margin-top: auto; /* Pushes to the bottom */
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+        }
+
+        .language-selector label {
+            display: block;
+            margin-bottom: 5px;
+            color: var(--text-color);
+        }
+
+        .language-selector select {
+            width: 80%;
+            padding: 8px;
+            border-radius: 5px;
+            background-color: var(--primary-bg);
+            color: var(--text-color);
+            border: 1px solid var(--highlight-green);
+            cursor: pointer;
+        }
+
+        .language-selector select:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px var(--highlight-green);
+        }
 
         /* Main Content Styling */
         .content {
@@ -190,34 +216,6 @@
             margin-top: 0;
             border-bottom: none;
         }
-
-        .language-selector {
-            margin-top: auto; /* Pushes to the bottom */
-            padding-top: 20px;
-            border-top: 1px solid var(--border-color);
-            text-align: center;
-        }
-
-        .language-selector label {
-            display: block;
-            margin-bottom: 5px;
-            color: var(--text-color);
-        }
-
-        .language-selector select {
-            width: 80%;
-            padding: 8px;
-            border-radius: 5px;
-            background-color: var(--primary-bg);
-            color: var(--text-color);
-            border: 1px solid var(--highlight-green);
-            cursor: pointer;
-        }
-
-        .language-selector select:focus {
-            outline: none;
-            box-shadow: 0 0 0 2px var(--highlight-green);
-        }
     </style>
 </head>
 <body>
@@ -228,7 +226,7 @@
                 <ul>
                     <li><a href="#home" class="nav-link active">Home</a></li>
                     <li><a href="#projects" class="nav-link">Projects</a></li>
-                    <li><a href="#trkey-keymap-configurator" class="nav-link sub-link">TrkEy Keymap Configurator</a></li>
+                    <li><a href="#trkey-keymap-configurator" class="nav-link">TrkEy Keymap Configurator</a></li>
                     </ul>
             </nav>
             <div class="language-selector">
@@ -255,12 +253,25 @@
         // IMPORTANT: Each Google Doc MUST be published to the web (File > Share > Publish to web)
         // and you must use the generated '/pub' URL.
         const wikiPageUrls = {
-            'home': {
-                'en': 'https://docs.google.com/document/d/e/2PACX-1vR_YOUR_HOME_DOC_ID_EN/pub', // REPLACE WITH YOUR ACTUAL PUBLISHED GOOGLE DOC URL for English Home
-                'ko': 'https://docs.google.com/document/d/e/2PACX-1vR_YOUR_HOME_DOC_ID_KO/pub', // REPLACE WITH YOUR ACTUAL PUBLISHED GOOGLE DOC URL for Korean Home
-                'ja': 'https://docs.google.com/document/d/e/2PACX-1vR_YOUR_HOME_DOC_ID_JA/pub', // REPLACE WITH YOUR ACTUAL PUBLISHED GOOGLE DOC URL for Japanese Home
-                'es': 'https://docs.google.com/document/d/e/2PACX-1vR_YOUR_HOME_DOC_ID_ES/pub'  // REPLACE WITH YOUR ACTUAL PUBLISHED GOOGLE DOC URL for Spanish Home
-            },
+            'home': `
+                <h1>Welcome to TriniBos1 Wiki!</h1>
+                <p>Your centralized knowledge base for all projects managed by <strong>TriniBos1</strong>. This platform is designed to provide comprehensive documentation for users and developers alike.</p>
+                
+                <h2>What is TriniBos1 Wiki?</h2>
+                <p>TriniBos1 Wiki is a dedicated platform for hosting dynamic documentation for various software projects, applications, and initiatives. We aim to provide a user-friendly and developer-centric environment for sharing information efficiently.</p>
+                
+                <h2>Our Hosted Projects</h2>
+                <p>Explore the projects documented on TriniBos1 Wiki:</p>
+                <ul>
+                    <li><a href="#trkey-keymap-configurator">TrkEy Keymap Configurator</a>: A web-based utility for creating and managing custom keymaps for TrkEy keyboards.</li>
+                    </ul>
+
+                <h2>How to Use This Wiki</h2>
+                <ul>
+                    <li><strong>For Users:</strong> Navigate through the "Projects" section in the sidebar to find documentation for the specific application you're interested in.</li>
+                    <li><strong>For Project Owners/Contributors:</strong> If you manage a project hosted here or wish to add one, please refer to our <a href="#contact">Contact page</a> for contribution guidelines.</li>
+                </ul>
+            `,
             'projects': {
                 'en': 'https://docs.google.com/document/d/e/2PACX-1vR_YOUR_PROJECTS_DOC_ID_EN/pub', // REPLACE WITH YOUR ACTUAL PUBLISHED GOOGLE DOC URL for English Projects
                 'ko': 'https://docs.google.com/document/d/e/2PACX-1vR_YOUR_PROJECTS_DOC_ID_KO/pub', // REPLACE WITH YOUR ACTUAL PUBLISHED GOOGLE DOC URL for Korean Projects
@@ -273,18 +284,26 @@
                 'ja': 'https://docs.google.com/document/d/e/2PACX-1vR_YOUR_TRKEY_DOC_ID_JA/pub', // REPLACE with Japanese TrkEy Doc URL
                 'es': 'https://docs.google.com/document/d/e/2PACX-1vR_YOUR_TRKEY_DOC_ID_ES/pub'  // REPLACE with Spanish TrkEy Doc URL
             },
-            'about': {
-                'en': 'https://docs.google.com/document/d/e/2PACX-1vR_YOUR_ABOUT_DOC_ID_EN/pub', // REPLACE WITH YOUR ACTUAL PUBLISHED GOOGLE DOC URL for English About
-                'ko': 'https://docs.google.com/document/d/e/2PACX-1vR_YOUR_ABOUT_DOC_ID_KO/pub', // REPLACE WITH YOUR ACTUAL PUBLISHED GOOGLE DOC URL for Korean About
-                'ja': 'https://docs.google.com/document/d/e/2PACX-1vR_YOUR_ABOUT_DOC_ID_JA/pub', // REPLACE WITH YOUR ACTUAL PUBLISHED GOOGLE DOC URL for Japanese About
-                'es': 'https://docs.google.com/document/d/e/2PACX-1vR_YOUR_ABOUT_DOC_ID_ES/pub'  // REPLACE WITH YOUR ACTUAL PUBLISHED GOOGLE DOC URL for Spanish About
-            },
-            'contact': {
-                'en': 'https://docs.google.com/document/d/e/2PACX-1vR_YOUR_CONTACT_DOC_ID_EN/pub', // REPLACE WITH YOUR ACTUAL PUBLISHED GOOGLE DOC URL for English Contact
-                'ko': 'https://docs.google.com/document/d/e/2PACX-1vR_YOUR_CONTACT_DOC_ID_KO/pub', // REPLACE WITH YOUR ACTUAL PUBLISHED GOOGLE DOC URL for Korean Contact
-                'ja': 'https://docs.google.com/document/d/e/2PACX-1vR_YOUR_CONTACT_DOC_ID_JA/pub', // REPLACE WITH YOUR ACTUAL PUBLISHED GOOGLE DOC URL for Japanese Contact
-                'es': 'https://docs.google.com/document/d/e/2PACX-1vR_YOUR_CONTACT_DOC_ID_ES/pub'  // REPLACE WITH YOUR ACTUAL PUBLISHED GOOGLE DOC URL for Spanish Contact
-            }
+            'about': `
+                <h1>About TriniBos1 Wiki</h1>
+                <p>The TriniBos1 Wiki is maintained by TriniBos1 to provide clear and accessible documentation for all our projects.</p>
+                <p>Our vision is to build a community-driven knowledge base that empowers both users and developers to understand, use, and contribute to our software and initiatives.</p>
+                <h2>Our Mission</h2>
+                <ul>
+                    <li>To provide accurate and up-to-date documentation.</li>
+                    <li>To foster collaboration and contribution from the community.</li>
+                    <li>To make complex technical information easy to understand.</li>
+                </ul>
+                <p>Thank you for visiting!</p>
+            `,
+            'contact': `
+                <h1>Contact Us</h1>
+                <p>If you have any questions, feedback, or need support, please reach out to us:</p>
+                <ul>
+                    <li><strong>Discord:</strong> Join our community on <a href="https://discord.gg/zJr3sUYY4g">Discord</a> for direct support and discussions.</li>
+                    <li><strong>GitHub:</strong> For bug reports or feature requests, please use the <a href="https://github.com/trinibos1/trkey-keymap-configurator/issues">Issues page on GitHub</a>.</li>
+                </ul>
+            `
             // To add a new page:
             // 1. Create a Google Doc for each language (English, Korean, Japanese, Spanish).
             // 2. Publish EACH Google Doc to the web (File > Share > Publish to web) and copy its /pub URL.
@@ -310,55 +329,70 @@
         let currentLang = 'en'; // Default language
         let currentPageId = 'home'; // Default page
 
-        // Function to load content from a URL
+        // Function to load content from a URL or directly from string
         async function loadContent(pageId, lang) {
-            const pageUrls = wikiPageUrls[pageId];
-            const url = pageUrls ? pageUrls[lang] : null;
+            let contentToDisplay = '';
+            const pageEntry = wikiPageUrls[pageId];
 
-            if (!url || url.includes('YOUR_')) { // Check if URL is placeholder
+            // Check if the content is directly embedded HTML (like 'home', 'about', 'contact')
+            if (typeof pageEntry === 'string') {
+                contentToDisplay = pageEntry;
+            } else if (pageEntry && pageEntry[lang]) {
+                // If not direct HTML, assume it's an object with language URLs
+                const url = pageEntry[lang];
+
+                if (url.includes('YOUR_')) { // Check if URL is placeholder
+                    wikiContentDiv.innerHTML = `
+                        <h1 style="color: var(--accent-red);">Page Not Found / URL Placeholder</h1>
+                        <p>The content for "${pageId}" in ${lang.toUpperCase()} is not available or its Google Doc URL is a placeholder.</p>
+                        <p>Please ensure you have published your Google Doc to the web and updated the <code>wikiPageUrls</code> object in the script with the correct <code>/pub</code> URL for this page and language.</p>
+                        <p>Navigate to a different page or update the code.</p>
+                    `;
+                    console.warn(`URL for page "${pageId}" in language "${lang}" not found or is a placeholder in wikiPageUrls.`);
+                    return;
+                }
+
                 wikiContentDiv.innerHTML = `
-                    <h1 style="color: var(--accent-red);">Page Not Found / URL Placeholder</h1>
-                    <p>The content for "${pageId}" in ${lang.toUpperCase()} is not available or its Google Doc URL is a placeholder.</p>
-                    <p>Please ensure you have published your Google Doc to the web and updated the <code>wikiPageUrls</code> object in the script with the correct <code>/pub</code> URL for this page and language.</p>
-                    <p>Navigate to a different page or update the code.</p>
+                    <div style="text-align: center; padding: 50px;">
+                        <h2 style="color: var(--highlight-green);">Loading content...</h2>
+                        <p>Please wait while we fetch the page from Google Docs.</p>
+                    </div>
+                `; // Loading indicator
+
+                try {
+                    const response = await fetch(url);
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status} for ${url}`);
+                    }
+                    const htmlContent = await response.text();
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(htmlContent, 'text/html');
+                    contentToDisplay = doc.body.innerHTML;
+                } catch (error) {
+                    console.error('Failed to load content from Google Doc:', error);
+                    wikiContentDiv.innerHTML = `
+                        <h1 style="color: var(--accent-red);">Error Loading Page</h1>
+                        <p>Could not retrieve content from Google Docs for "${pageId}" in ${lang.toUpperCase()}.</p>
+                        <p>Please ensure the Google Doc is published to the web and the URL is correct.</p>
+                        <p>Error details: ${error.message}</p>
+                    `;
+                    return; // Exit if fetch fails
+                }
+            } else {
+                // Fallback for pages not found in wikiPageUrls
+                wikiContentDiv.innerHTML = `
+                    <h1 style="color: var(--accent-red);">Page Not Found</h1>
+                    <p>The content for "${pageId}" is not available in any format.</p>
+                    <p>Please check the page ID or available content.</p>
                 `;
-                console.warn(`URL for page "${pageId}" in language "${lang}" not found or is a placeholder in wikiPageUrls.`);
+                console.warn(`Content for page "${pageId}" not found in wikiPageUrls.`);
                 return;
             }
 
-            wikiContentDiv.innerHTML = `
-                <div style="text-align: center; padding: 50px;">
-                    <h2 style="color: var(--highlight-green);">Loading content...</h2>
-                    <p>Please wait while we fetch the page from Google Docs.</p>
-                </div>
-            `; // Loading indicator
-
-            try {
-                const response = await fetch(url);
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status} for ${url}`);
-                }
-                const htmlContent = await response.text();
-
-                // Google Docs published HTML includes <head> and <body> tags.
-                // We want to extract only the content within the <body> to avoid conflicts.
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(htmlContent, 'text/html');
-                const bodyContent = doc.body.innerHTML;
-
-                wikiContentDiv.innerHTML = bodyContent;
-                currentPageId = pageId;
-                window.location.hash = `#${pageId}`;
-
-            } catch (error) {
-                console.error('Failed to load content from Google Doc:', error);
-                wikiContentDiv.innerHTML = `
-                    <h1 style="color: var(--accent-red);">Error Loading Page</h1>
-                    <p>Could not retrieve content from Google Docs for "${pageId}" in ${lang.toUpperCase()}.</p>
-                    <p>Please ensure the Google Doc is published to the web and the URL is correct.</p>
-                    <p>Error details: ${error.message}</p>
-                `;
-            }
+            // Display the content if it was loaded successfully
+            wikiContentDiv.innerHTML = contentToDisplay;
+            currentPageId = pageId;
+            window.location.hash = `#${pageId}`;
 
             // Update active state in navigation
             navLinks.forEach(link => {
