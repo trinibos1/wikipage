@@ -231,16 +231,7 @@
                     <li><a href="#contact" class="nav-link">Contact</a></li>
                     </ul>
             </nav>
-            <div class="language-selector">
-                <label for="lang-select">Language:</label>
-                <select id="lang-select">
-                    <option value="en">English</option>
-                    <option value="ko">한국어</option>
-                    <option value="ja">日本語</option>
-                    <option value="es">Español</option>
-                </select>
-            </div>
-        </aside>
+            </aside>
 
         <main class="content" id="wiki-content">
             <div style="text-align: center; padding: 50px;">
@@ -274,18 +265,8 @@
                     <li><strong>For Project Owners/Contributors:</strong> If you manage a project hosted here or wish to add one, please refer to our <a href="#contact">Contact page</a> for contribution guidelines.</li>
                 </ul>
             `,
-            'projects': {
-                'en': 'https://docs.google.com/document/d/e/2PACX-1vR_YOUR_PROJECTS_DOC_ID_EN/pub', // REPLACE WITH YOUR ACTUAL PUBLISHED GOOGLE DOC URL for English Projects
-                'ko': 'https://docs.google.com/document/d/e/2PACX-1vR_YOUR_PROJECTS_DOC_ID_KO/pub', // REPLACE WITH YOUR ACTUAL PUBLISHED GOOGLE DOC URL for Korean Projects
-                'ja': 'https://docs.google.com/document/d/e/2PACX-1vR_YOUR_PROJECTS_DOC_ID_JA/pub', // REPLACE WITH YOUR ACTUAL PUBLISHED GOOGLE DOC URL for Japanese Projects
-                'es': 'https://docs.google.com/document/d/e/2PACX-1vR_YOUR_PROJECTS_DOC_ID_ES/pub'  // REPLACE WITH YOUR ACTUAL PUBLISHED GOOGLE DOC URL for Spanish Projects
-            },
-            'trkey-keymap-configurator': {
-                'en': 'https://docs.google.com/document/d/e/2PACX-1vTKMlVJdMZLpRsVtcrg6x9wskp-McY6Q6vDAvlvV20Fn8Gb9KBUH_iA2MlFVidENjDLBiynX8yYUmYE/pub', // Your provided TrkEy Doc URL
-                'ko': 'https://docs.google.com/document/d/e/2PACX-1vR_YOUR_TRKEY_DOC_ID_KO/pub', // REPLACE with Korean TrkEy Doc URL
-                'ja': 'https://docs.google.com/document/d/e/2PACX-1vR_YOUR_TRKEY_DOC_ID_JA/pub', // REPLACE with Japanese TrkEy Doc URL
-                'es': 'https://docs.google.com/document/d/e/2PACX-1vR_YOUR_TRKEY_DOC_ID_ES/pub'  // REPLACE with Spanish TrkEy Doc URL
-            },
+            'projects': 'https://docs.google.com/document/d/e/2PACX-1vR_YOUR_PROJECTS_DOC_ID_EN/pub', // REPLACE WITH YOUR ACTUAL PUBLISHED GOOGLE DOC URL for English Projects
+            'trkey-keymap-configurator': 'https://docs.google.com/document/d/e/2PACX-1vTKMlVJdMZLpRsVtcrg6x9wskp-McY6Q6vDAvlvV20Fn8Gb9KBUH_iA2MlFVidENjDLBiynX8yYUmYE/pub', // Your provided TrkEy Doc URL
             'about': `
                 <h1>About TriniBos1 Wiki</h1>
                 <p>The TriniBos1 Wiki is maintained by TriniBos1 to provide clear and accessible documentation for all our projects.</p>
@@ -308,45 +289,38 @@
             `
             // To add a new page:
             // If the page content is directly embedded HTML, add it as a string to wikiPageUrls.
-            // If the page content is from a Google Doc, add an object with language URLs to wikiPageUrls.
+            // If the page content is from a Google Doc, add its /pub URL to wikiPageUrls.
             // Then, add a corresponding <li> with an <a> tag in the HTML sidebar navigation.
             // Example for embedded HTML: 'my-new-embedded-page': `<h1>My New Embedded Page!</h1><p>Content here.</p>`,
-            // Example for Google Doc:
-            // 'my-new-doc-page': {
-            //     'en': 'https://docs.google.com/document/d/e/2PACX-1vR_NEW_DOC_EN/pub',
-            //     'ko': 'https://docs.google.com/document/d/e/2PACX-1vR_NEW_DOC_KO/pub',
-            //     // ... other languages
-            // },
+            // Example for Google Doc: 'my-new-doc-page': 'https://docs.google.com/document/d/e/2PACX-1vR_NEW_DOC/pub',
         };
 
         // --- Core Logic ---
         const wikiContentDiv = document.getElementById('wiki-content');
         const navLinks = document.querySelectorAll('.main-nav a[href^="#"]');
-        const langSelect = document.getElementById('lang-select');
+        // const langSelect = document.getElementById('lang-select'); // Removed as language selector is removed
 
-        let currentLang = 'en'; // Default language
         let currentPageId = 'home'; // Default page
 
         // Function to load content from a URL or directly from string
-        async function loadContent(pageId, lang) {
+        async function loadContent(pageId) { // Removed 'lang' parameter
             let contentToDisplay = '';
             const pageEntry = wikiPageUrls[pageId];
 
             // Check if the content is directly embedded HTML
             if (typeof pageEntry === 'string') {
                 contentToDisplay = pageEntry;
-            } else if (pageEntry && pageEntry[lang]) {
-                // If not direct HTML, assume it's an object with language URLs
-                const url = pageEntry[lang];
+            } else { // Assume it's a Google Doc URL
+                const url = pageEntry; // Directly use the URL
 
                 if (url.includes('YOUR_')) { // Check if URL is placeholder
                     wikiContentDiv.innerHTML = `
                         <h1 style="color: var(--accent-red);">Page Not Found / URL Placeholder</h1>
-                        <p>The content for "${pageId}" in ${lang.toUpperCase()} is not available or its Google Doc URL is a placeholder.</p>
-                        <p>Please ensure you have published your Google Doc to the web and updated the <code>wikiPageUrls</code> object in the script with the correct <code>/pub</code> URL for this page and language.</p>
+                        <p>The content for "${pageId}" is not available or its Google Doc URL is a placeholder.</p>
+                        <p>Please ensure you have published your Google Doc to the web and updated the <code>wikiPageUrls</code> object in the script with the correct <code>/pub</code> URL for this page.</p>
                         <p>Navigate to a different page or update the code.</p>
                     `;
-                    console.warn(`URL for page "${pageId}" in language "${lang}" not found or is a placeholder in wikiPageUrls.`);
+                    console.warn(`URL for page "${pageId}" not found or is a placeholder in wikiPageUrls.`);
                     return;
                 }
 
@@ -365,12 +339,33 @@
                     const htmlContent = await response.text();
                     const parser = new DOMParser();
                     const doc = parser.parseFromString(htmlContent, 'text/html');
-                    contentToDisplay = doc.body.innerHTML;
+                    
+                    // Get the body content
+                    let bodyContent = doc.body.innerHTML;
+
+                    // Remove Google Docs footer: "Published using Google Docs Report abuseLearn more"
+                    // This footer is often within a div with a specific class or ID, or just at the end.
+                    // A common pattern is a div with class "footer" or "doc-footer".
+                    // We'll try to find and remove it.
+                    const footerDiv = doc.querySelector('.doc-footer, .kix-page-footer'); // Common Google Docs footer classes
+                    if (footerDiv) {
+                        footerDiv.remove();
+                        bodyContent = doc.body.innerHTML; // Update bodyContent after removal
+                    }
+                    // Also remove the "Updated automatically every 5 minutes" text if it's separate
+                    bodyContent = bodyContent.replace(/Updated automatically every 5 minutes/g, '');
+
+
+                    // Replace "trkey" with "Trkey" (case-insensitive global replacement)
+                    bodyContent = bodyContent.replace(/trkey/gi, 'Trkey');
+
+                    contentToDisplay = bodyContent;
+
                 } catch (error) {
                     console.error('Failed to load content from Google Doc:', error);
                     wikiContentDiv.innerHTML = `
                         <h1 style="color: var(--accent-red);">Error Loading Page</h1>
-                        <p>Could not retrieve content from Google Docs for "${pageId}" in ${lang.toUpperCase()}.</p>
+                        <p>Could not retrieve content from Google Docs for "${pageId}".</p>
                         <p>Please ensure the Google Doc is published to the web and the URL is correct.</p>
                         <p>Error details: ${error.message}</p>
                     `;
@@ -407,36 +402,40 @@
             link.addEventListener('click', (event) => {
                 event.preventDefault(); // Prevent default link behavior
                 const pageId = link.getAttribute('href').substring(1); // Get page ID from href (e.g., "home")
-                loadContent(pageId, currentLang);
+                loadContent(pageId); // Removed 'currentLang' parameter
             });
         });
 
-        // Event listener for language selection
+        // Removed language selector event listener as language selector is removed
+        /*
         langSelect.addEventListener('change', (event) => {
             currentLang = event.target.value;
             localStorage.setItem('wikiLang', currentLang); // Save preference
             loadContent(currentPageId, currentLang); // Reload current page with new language
         });
+        */
 
         // Handle initial page load and hash changes
         function handleInitialLoad() {
-            // Load saved language preference
+            // Removed language preference loading as language selector is removed
+            /*
             const savedLang = localStorage.getItem('wikiLang');
             if (savedLang && ['en', 'ko', 'ja', 'es'].includes(savedLang)) {
                 currentLang = savedLang;
                 langSelect.value = savedLang;
             }
+            */
 
             // Load page based on URL hash, or default to 'home'
             const initialPageId = window.location.hash ? window.location.hash.substring(1) : 'home';
-            loadContent(initialPageId, currentLang);
+            loadContent(initialPageId); // Removed 'currentLang' parameter
         }
 
         // Listen for hash changes (e.g., if someone manually changes #home to #about)
         window.addEventListener('hashchange', () => {
             const newPageId = window.location.hash ? window.location.hash.substring(1) : 'home';
             if (newPageId !== currentPageId) { // Only reload if it's a different page
-                loadContent(newPageId, currentLang);
+                loadContent(newPageId); // Removed 'currentLang' parameter
             }
         });
 
