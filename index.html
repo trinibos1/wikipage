@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TriniBos1 Wiki</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* CSS for the cool UI with Green, Black, Red */
+        :root {
+            --primary-bg: #1a1a1a; /* Dark Black */
+            --secondary-bg: #2a2a2a; /* Slightly lighter black for sections */
+            --text-color: #e0e0e0; /* Light grey for readability */
+            --highlight-green: #00ff00; /* Vibrant Green */
+            --accent-red: #ff4d4d; /* Noticeable Red */
+            --border-color: #333;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--primary-bg);
+            color: var(--text-color);
+            display: flex;
+            min-height: 100vh; /* Ensures full height */
+            overflow-x: hidden; /* Prevent horizontal scroll */
+        }
+
+        .container {
+            display: flex;
+            width: 100%;
+        }
+
+        /* Sidebar Styling */
+        .sidebar {
+            width: 280px; /* Fixed width for sidebar */
+            background-color: var(--secondary-bg);
+            padding: 20px;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5); /* Subtle shadow */
+            display: flex;
+            flex-direction: column;
+            position: sticky; /* Make sidebar sticky */
+            top: 0;
+            height: 100vh; /* Full height */
+            overflow-y: auto; /* Allow scrolling for long navigation */
+            border-right: 1px solid var(--border-color);
+        }
+
+        .wiki-title {
+            color: var(--highlight-green);
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 1.8em;
+            border-bottom: 2px solid var(--highlight-green);
+            padding-bottom: 10px;
+        }
+
+        .main-nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .main-nav li {
+            margin-bottom: 10px;
+            position: relative; /* Crucial for positioning the dropdown */
+        }
+
+        .main-nav a {
+            display: block;
+            padding: 10px 15px;
+            color: var(--text-color);
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            cursor: pointer; /* Indicate it's interactive */
+        }
+
+        .main-nav a:hover,
+        .main-nav a.active {
+            background-color: var(--highlight-green);
+            color: var(--primary-bg); /* Dark text on green hover */
+        }
+
+        /* Dropdown specific styles */
+        .sub-nav {
+            list-style: none;
+            padding: 0; /* Remove padding-left from parent */
+            margin: 0;
+            position: absolute; /* Position relative to parent li */
+            top: 100%; /* Position below the parent link */
+            left: 0;
+            background-color: var(--secondary-bg); /* Background for dropdown */
+            min-width: 100%; /* Ensure it's at least as wide as parent */
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.7); /* Dropdown shadow */
+            border-radius: 5px;
+            z-index: 10; /* Ensure it appears above other content */
+            display: none; /* Hidden by default */
+            border: 1px solid var(--border-color);
+            overflow: hidden; /* For rounded corners */
+        }
+
+        .has-dropdown:hover > .sub-nav {
+            display: block; /* Show on hover of the parent li */
+        }
+
+        .sub-nav .sub-link {
+            font-size: 0.9em;
+            padding: 8px 15px; /* Adjust padding for sub-links */
+            background-color: transparent; /* Start transparent */
+            color: var(--text-color);
+        }
+
+        .sub-nav .sub-link:hover {
+            background-color: var(--highlight-green);
+            color: var(--primary-bg);
+        }
+
+        /* Ensure the dropdown trigger doesn't have a blue link underline */
+        .dropdown-trigger {
+            text-decoration: none !important; /* Override default link underline */
+        }
+
+        /* Adjust active state for dropdown trigger if a sub-link is active */
+        .has-dropdown .dropdown-trigger.active {
+            background-color: var(--highlight-green);
+            color: var(--primary-bg);
+        }
+
+        /* Main Content Styling */
+        .content {
+            flex-grow: 1; /* Takes remaining space */
+            padding: 30px;
+            background-color: var(--primary-bg);
+            overflow-y: auto; /* Allow content to scroll */
+        }
+
+        .content h1, .content h2, .content h3, .content h4 {
+            color: var(--highlight-green);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 5px;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+
+        .content h1 { font-size: 2.5em; border-bottom: 2px solid var(--highlight-green); }
+        .content h2 { font-size: 2em; }
+        .content h3 { font-size: 1.5em; }
+
+        .content p {
+            line-height: 1.6;
+            margin-bottom: 1em;
+        }
+
+        .content ul {
+            list-style-type: disc;
+            margin-left: 20px;
+            margin-bottom: 1em;
+        }
+
+        .content ul li {
+            margin-bottom: 0.5em;
+        }
+
+        .content ol {
+            margin-left: 20px;
+            margin-bottom: 1em;
+        }
+
+        .content ol li {
+            margin-bottom: 0.5em;
+        }
+
+        .content pre {
+            background-color: var(--secondary-bg);
+            border: 1px solid var(--border-color);
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+            color: var(--text-color);
+        }
+
+        .content code {
+            background-color: rgba(0, 255, 0, 0.1);
+            color: var(--highlight-green);
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        .content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1em;
+        }
+
+        .content table th,
+        .content table td {
+            border: 1px solid var(--border-color);
+            padding: 8px;
+            text-align: left;
+        }
+
+        .content table th {
+            background-color: var(--highlight-green);
+            color: var(--primary-bg);
+        }
+
+        .content a:not(.nav-link) { /* Style for links within content */
+            color: var(--highlight-green);
+            text-decoration: underline;
+        }
+
+        .content a:not(.nav-link):hover {
+            color: var(--accent-red);
+        }
+
+        /* Specific styling for warnings/notes (using red accent) */
+        .content .note, .content .important {
+            background-color: rgba(255, 77, 77, 0.1); /* Light red tint */
+            border-left: 5px solid var(--accent-red);
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+
+        .content .note h3, .content .important h3 {
+            color: var(--accent-red);
+            margin-top: 0;
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <h1 class="wiki-title">TriniBos1 Wiki</h1>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="#home" class="nav-link active">Home</a></li>
+                    <li class="has-dropdown"> <a class="nav-link dropdown-trigger">Projects</a> <ul class="sub-nav">
+                            <li><a href="#trkey-keymap-configurator" class="nav-link sub-link">TrkEy Keymap Configurator</a></li>
+                            </ul>
+                    </li>
+                    <li><a href="#about" class="nav-link">About TriniBos1 Wiki</a></li>
+                    <li><a href="#contact" class="nav-link">Contact</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="content" id="wiki-content">
+            Loading content...
+        </main>
+    </div>
+
+    <script>
+        // JavaScript for Dynamic Content Loading
+        const wikiContent = {
+            'home': `
+                <h1>Welcome to TriniBos1 Wiki!</h1>
+                <p>Your centralized knowledge base for all projects managed by <strong>TriniBos1</strong>. This platform is designed to provide comprehensive documentation for users and developers alike.</p>
+                
+                <h2>What is TriniBos1 Wiki?</h2>
+                <p>TriniBos1 Wiki is a dedicated platform for hosting dynamic documentation for various software projects, applications, and initiatives. We aim to provide a user-friendly and developer-centric environment for sharing information efficiently.</p>
+                
+                <h2>Our Hosted Projects</h2>
+                <p>Explore the projects documented on TriniBos1 Wiki:</p>
+                <ul>
+                    <li><a href="#trkey-keymap-configurator">TrkEy Keymap Configurator</a>: A web-based utility for creating and managing custom keymaps for TrkEy keyboards.</li>
+                    </ul>
+
+                <h2>How to Use This Wiki</h2>
+                <ul>
+                    <li><strong>For Users:</strong> Navigate through the "Projects" section in the sidebar to find documentation for the specific application you're interested in.</li>
+                    <li><strong>For Project Owners/Contributors:</strong> If you manage a project hosted here or wish to add one, please refer to our <a href="#contact">Contact page</a> for contribution guidelines.</li>
+                </ul>
+            `,
+            'trkey-keymap-configurator': `
+                <h1>TrkEy Keymap Configurator Wiki</h1>
+                <p>This document serves as a comprehensive guide to the TrkEy Keymap Configurator, detailing its features, usage, and technical aspects.</p>
+                
+                <h2>1. Home Page</h2>
+                <h3>Welcome to the TrkEy Keymap Configurator wiki!</h3>
+                <p>This tool helps you easily create and manage custom keymaps for your TrkEy keyboard. Whether you're looking to streamline your workflow with powerful macros, define efficient key combinations, or set up custom shortcuts, this configurator makes it straightforward.</p>
+                
+                <h3>What is TrkEy Keymap Configurator?</h3>
+                <p>The TrkEy Keymap Configurator is a web-based utility designed to provide a user-friendly interface for generating custom keymap configurations. Instead of manually editing complex configuration files, you can use this visual tool to:</p>
+                <ul>
+                    <li>Define and manage macros: Create sequences of keystrokes.</li>
+                    <li>Set up efficient key combos: Assign specific actions to multiple key presses.</li>
+                    <li>Organize custom shortcuts: Keep track of your personalized key assignments.</li>
+                    <li>Generate ready-to-use output: Get the configuration code compatible with your TrkEy keyboard firmware.</li>
+                </ul>
+                
+                <h3>Key Features</h3>
+                <ul>
+                    <li><strong>Intuitive Interface:</strong> Easily add, edit, and delete macros, combos, and shortcuts.</li>
+                    <li><strong>Real-time Preview:</strong> See your generated configuration as you build it.</li>
+                    <li><strong>Preset Loading:</strong> Start with pre-defined keymaps or load your own.</li>
+                    <li><strong>Drag & Drop:</strong> Assign shortcuts to keys by dragging them from the pool to the keymap grid.</li>
+                    <li><strong>Click-to-Map:</strong> Select a key on the grid, then click a shortcut to assign it.</li>
+                    <li><strong>AI-Powered Generation:</strong> Generate new shortcuts and macros using natural language prompts.</li>
+                    <li><strong>Web Serial API Integration:</strong> Directly connect to and upload keymaps to compatible Micropad devices (Chromium browsers only).</li>
+                    <li><strong>Local Storage Persistence:</strong> Save and load your keymap and macros directly in your browser.</li>
+                </ul>
+
+                <h2>2. Getting Started</h2>
+                <h3>Getting Started with TrkEy Keymap Configurator</h3>
+                <p>This guide will walk you through the very first steps of using the TrkEy Keymap Configurator.</p>
+                
+                <h3>1. Accessing the Configurator</h3>
+                <p>The TrkEy Keymap Configurator is a web-based application. You can access it in two main ways:</p>
+                <ul>
+                    <li><strong>Directly from GitHub Pages:</strong> Simply open the following URL in your web browser: <code>[YOUR_GITHUB_PAGES_URL_HERE]</code> (e.g., <code>https://your-username.github.io/your-repository-name/</code>)</li>
+                    <li><strong>Running Locally:</strong> If you have downloaded the <code>index.html</code> file, you can open it directly in your web browser by double-clicking the <code>index.html</code> file.</li>
+                </ul>
+                
+                <h3>2. Interface Overview</h3>
+                <p>Upon opening the configurator, you'll see several main sections:</p>
+                <ul>
+                    <li><strong>Sidebar Navigation:</strong> On the left, switch between "KEYMAP", "MACROS", "SAVE + LOAD", "SETTINGS", and "KEY TESTER" tabs.</li>
+                    <li><strong>Keymap Grid:</strong> The 3x3 grid representing your micropad, where you assign keys.</li>
+                    <li><strong>Shortcut Pool:</strong> A collection of pre-defined and custom shortcuts you can assign.</li>
+                    <li><strong>AI Generators:</strong> Sections for generating shortcuts and macros using AI.</li>
+                    <li><strong>Live JSON Preview:</strong> In the "SETTINGS" tab, this box shows the raw configuration code that will be generated for your TrkEy keyboard. It updates in real-time as you make changes.</li>
+                </ul>
+                
+                <h3>3. Your First Keymap</h3>
+                <p>Let's create a simple keymap:</p>
+                <ol>
+                    <li><strong>Navigate to KEYMAP tab:</strong> Ensure you are on the "KEYMAP" tab in the sidebar.</li>
+                    <li><strong>Select a Layer:</strong> Click on the layer buttons (e.g., 0, 1, 2, 3) above the keymap grid to select the layer you want to edit. Layer 0 is the default.</li>
+                    <li><strong>Assign a Shortcut (Drag & Drop):</strong>
+                        <ul>
+                            <li>In the "SHORTCUTS" section below the keymap grid, find a shortcut you want to use (e.g., "Move" from the "BASIC" category).</li>
+                            <li>Click and drag this shortcut. You'll see a ghost image of it.</li>
+                            <li>Drag it over one of the empty key slots on the 3x3 keymap grid.</li>
+                            <li>Release the mouse button to drop the shortcut onto the key. The key will now display the shortcut's description.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Assign a Shortcut (Click-to-Map):</strong>
+                        <ul>
+                            <li>Click an empty key on the 3x3 keymap grid.</li>
+                            <li>A modal will appear confirming the key is selected.</li>
+                            <li>Now, click any shortcut from the "SHORTCUTS" pool. The selected shortcut will be immediately mapped to the key you clicked earlier.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Add Your First Macro:</strong>
+                        <ul>
+                            <li>Navigate to the "MACROS" tab in the sidebar.</li>
+                            <li>Click the "+ Add New Macro" button. A modal window will appear.</li>
+                            <li>In the "Macro Name" field, type <code>HELLO_WORLD</code>.</li>
+                            <li>In the "Macro Sequence" field, type <code>Hello, World!{KC_ENTER}</code>.</li>
+                            <li>Click "Create Macro."</li>
+                            <li>You should now see your <code>HELLO_WORLD</code> macro in the list.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Assign the Macro to a Key:</strong>
+                        <ul>
+                            <li>Go back to the "KEYMAP" tab.</li>
+                            <li>In the "SHORTCUTS" section, select the "MACRO" category.</li>
+                            <li>You should see your <code>HELLO_WORLD</code> macro listed.</li>
+                            <li>Drag and drop (or click-to-map) this macro onto an empty key on your 3x3 grid.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Observe the Output:</strong>
+                        <ul>
+                            <li>Navigate to the "SETTINGS" tab.</li>
+                            <li>Look at the "Current Keymap JSON Preview" box.</li>
+                            <li>You should see your newly defined key assignments and macros reflected in the generated configuration.</li>
+                        </ul>
+                    </li>
+                </ol>
+                <p>You've successfully started using the TrkEy Keymap Configurator! Explore the other sections below for more advanced usage.</p>
+
+                <h2>3. Features & Usage</h2>
+                <h3>3.1. Defining Macros</h3>
+                <p>Macros are powerful tools that allow you to execute a sequence of keystrokes or actions with a single trigger. This page explains how to effectively create and manage macros in the TrkEy Keymap Configurator.</p>
+                
+                <h4>What is a Macro?</h4>
+                <p>In TrkEy, a macro is a predefined sequence of key presses, text inputs, or system commands that can be assigned to a single key or key combination on your keyboard. When triggered, the macro will automatically perform all the steps in its sequence.</p>
+                
+                <h4>Adding a New Macro</h4>
+                <ol>
+                    <li><strong>Navigate to MACROS tab:</strong> Click on the "MACROS" tab in the sidebar.</li>
+                    <li><strong>Click "+ Add New Macro":</strong> A "Create New Macro" modal will pop up.</li>
+                    <li><strong>Macro Name:</strong>
+                        <ul>
+                            <li>Enter a unique, descriptive name for your macro (e.g., <code>EMAIL_SIGNATURE</code>, <code>GIT_COMMIT</code>). This name will be used in the generated keymap.</li>
+                            <li><strong>Best Practice:</strong> Use <code>UPPER_SNAKE_CASE</code> for macro names, as they will be converted to this format in the final JSON.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Description (optional):</strong> Provide a short description for your own reference.</li>
+                    <li><strong>Macro Sequence:</strong>
+                        <ul>
+                            <li>Type the sequence of keystrokes or text that this macro should perform.</li>
+                            <li><strong>Plain Text:</strong> Simply type the text you want the macro to output.</li>
+                            <li><strong>Special Keys:</strong> Use specific syntax for special keys. These are based on QMK keycodes:
+                                <ul>
+                                    <li><code>{KC_ENTER}</code>: Enter key</li>
+                                    <li><code>{KC_TAB}</code>: Tab key</li>
+                                    <li><code>{KC_ESC}</code>: Escape key</li>
+                                    <li><code>{KC_GRV}</code>: Grave accent (backtick)</li>
+                                    <li><code>{KC_SPC}</code>: Spacebar</li>
+                                    <li><code>{KC_BSPC}</code>: Backspace</li>
+                                    <li><code>{KC_UP}</code>, <code>{KC_DOWN}</code>, <code>{KC_LEFT}</code>, <code>{KC_RIGHT}</code>: Arrow keys</li>
+                                    <li><code>{KC_LALT}</code>, <code>{KC_LCTL}</code>, <code>{KC_LSFT}</code>, <code>{KC_LGUI}</code>: Left modifiers (Alt, Ctrl, Shift, GUI/Win/Cmd)</li>
+                                    <li><code>{KC_RALT}</code>, <code>{KC_RCTL}</code>, <code>{KC_RSFT}</code>, <code>{KC_RGUI}</code>: Right modifiers</li>
+                                    <li><code>{KC_DEL}</code>: Delete</li>
+                                    <li><code>{KC_PGUP}</code>, <code>{KC_PGDN}</code>: Page Up/Down</li>
+                                    <li><code>{KC_HOME}</code>, <code>{KC_END}</code>: Home/End</li>
+                                    <li><code>{KC_F1}</code> - <code>{KC_F24}</code>: Function keys</li>
+                                    <li>Media Keys: <code>{KC_MPLY}</code> (Play/Pause), <code>{KC_MNXT}</code> (Next Track), <code>{KC_MPRV}</code> (Previous Track), <code>{KC_MUTE}</code> (Mute), <code>{KC_VOLD}</code> (Volume Down), <code>{KC_VOLU}</code> (Volume Up), <code>{KC_MSTP}</code> (Media Stop)</li>
+                                    <li>Toggle Keys: <code>{KC_PSCR}</code> (Print Screen), <code>{KC_SCRL}</code> (Scroll Lock), <code>{KC_PAUS}</code> (Pause/Break), <code>{KC_CAPS}</code> (Caps Lock), <code>{KC_NUM}</code> (Num Lock)</li>
+                                    <li>Keypad Keys: <code>{KC_KPDIV}</code>, <code>{KC_KPMUL}</code>, <code>{KC_KPSUB}</code>, <code>{KC_KPADD}</code>, <code>{KC_KP0}</code> - <code>{KC_KP9}</code>, <code>{KC_KPDOT}</code>, <code>{KC_KPENT}</code></li>
+                                    <li>Punctuation/Symbols: <code>{KC_COMM}</code> (,), <code>{KC_DOT}</code> (.), <code>{KC_SLSH}</code> (/), <code>{KC_BSLS}</code> (\), <code>{KC_SCLN}</code> (;), <code>{KC_QUOT}</code> ('), <code>{KC_GRV}</code> (`/~`), <code>{KC_LBRC}</code> ([), <code>{KC_RBRC}</code> (]), <code>{KC_MINS}</code> (-), <code>{KC_EQL}</code> (=), <code>{KC_AMPR}</code> (&), <code>{KC_PIPE}</code> (|), <code>{KC_EXLM}</code> (!), <code>{KC_AT}</code> (@), <code>{KC_HASH}</code> (#), <code>{KC_DLR}</code> ($), <code>{KC_PERC}</code> (%), <code>{KC_CIRC}</code> (^), <code>{KC_ASTR}</code> (*), <code>{KC_LPRN}</code> ((), <code>{KC_RPRN}</code> ()), <code>{KC_UNDS}</code> (_), <code>{KC_PLUS}</code> (+), <code>{KC_LCBR}</code> ({), <code>{KC_RCBR}</code> (}), <code>{KC_COLN}</code> (:), <code>{KC_DQUO}</code> ("), <code>{KC_LT}</code> (<), <code>{KC_GT}</code> (>), <code>{KC_QUES}</code> (?), <code>{KC_TILD}</code> (~), <code>{KC_PIPE}</code> (|), <code>{KC_AMPR}</code> (&), <code>{KC_EXLM}</code> (!)</li>
+                                </ul>
+                            </li>
+                            <li><strong>Combinations:</strong> To hold down a modifier with another key, concatenate them: <code>{KC_LCTL}{KC_Z}</code> for Ctrl+Z.</li>
+                            <li><strong>Delays:</strong> You can insert delays within a macro sequence using <code>{Delay N}</code> where N is the delay in milliseconds. E.g., <code>Hello{Delay 100}World!</code>.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Save:</strong> Click the "Create Macro" button to add the macro to your list.</li>
+                </ol>
+                
+                <h4>Editing Existing Macros</h4>
+                <ol>
+                    <li><strong>Select Macro:</strong> In the list of defined macros, click the "Edit" button next to the macro you wish to modify.</li>
+                    <li><strong>Make Changes:</strong> The "Edit Macro" modal will reappear, pre-filled with the macro's current information. Make your desired changes to the name, description, or sequence.</li>
+                    <li><strong>Save Changes:</strong> Click "Save Changes" to update the macro.</li>
+                </ol>
+                
+                <h4>Deleting Macros</h4>
+                <ol>
+                    <li><strong>Select Macro:</strong> In the list of defined macros, click the "Delete" button next to the macro you wish to remove.</li>
+                    <li><strong>Confirm:</strong> A confirmation modal will appear asking if you are sure. Click "Confirm" to permanently delete the macro.</li>
+                </ol>
+                
+                <h3>3.2. Managing Shortcuts</h3>
+                <p>The configurator provides a pool of pre-defined and custom shortcuts that you can assign to your keymap.</p>
+                
+                <h4>Shortcut Categories</h4>
+                <p>Shortcuts are organized into categories for easier navigation (e.g., "BASIC", "WINDOWS_SHORTCUTS", "MACOS_SHORTCUTS", "MEDIA", "LAYERS", etc.). You can switch between categories using the buttons above the shortcut display area.</p>
+                
+                <h4>Adding a New Custom Shortcut</h4>
+                <ol>
+                    <li><strong>Navigate to KEYMAP tab:</strong> Click on the "KEYMAP" tab in the sidebar.</li>
+                    <li><strong>Select a Category:</strong> Choose the category where you want to add your custom shortcut (e.g., "BASIC" or create a new "CUSTOM" category if you wish).</li>
+                    <li><strong>Click "+ Add Shortcut":</strong> This button is located at the end of the shortcut list for the currently selected category.</li>
+                    <li><strong>Shortcut Combo:</strong> Enter the key combination (e.g., Ctrl+Alt+Del, F13).</li>
+                    <li><strong>Description:</strong> Provide a brief description of what this shortcut does.</li>
+                    <li><strong>Save:</strong> Click "Add Shortcut" to add it to the selected category.</li>
+                </ol>
+                
+                <h4>Assigning Shortcuts to Keys</h4>
+                <p>You have two primary methods for assigning shortcuts to keys on your 3x3 grid:</p>
+                <ul>
+                    <li><strong>Drag & Drop:</strong>
+                        <ul>
+                            <li>Click and hold on any shortcut from the "SHORTCUTS" pool.</li>
+                            <li>Drag it over the desired key position on your 3x3 keymap grid.</li>
+                            <li>Release the mouse button to assign the shortcut.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Click-to-Map:</strong>
+                        <ul>
+                            <li>First, click on an empty (or existing) key on your 3x3 keymap grid.</li>
+                            <li>The key will be highlighted with a red border, and a modal will confirm its selection.</li>
+                            <li>Next, click on any shortcut from the "SHORTCUTS" pool. The selected shortcut will be immediately assigned to the previously clicked key on the grid.</li>
+                        </ul>
+                    </li>
+                </ul>
+                
+                <h4>Reordering Keys on the Grid</h4>
+                <p>You can also reorder keys within the 3x3 keymap grid using drag and drop:</p>
+                <ol>
+                    <li>Click and hold on a key on the 3x3 grid.</li>
+                    <li>Drag it to another key's position on the grid.</li>
+                    <li>Release the mouse button to swap the contents of the two keys.</li>
+                </ol>
+                
+                <h3>3.3. AI-Powered Generation</h3>
+                <p>The configurator includes AI features to help you generate new shortcuts and macros based on your natural language prompts.</p>
+                
+                <h4>AI-Powered Shortcut Generator</h4>
+                <ol>
+                    <li><strong>Navigate to KEYMAP tab:</strong> Ensure you are on the "KEYMAP" tab.</li>
+                    <li><strong>Locate AI Shortcut Generator:</strong> Scroll down to the "AI-POWERED SHORTCUT GENERATOR" section.</li>
+                    <li><strong>Enter Prompt:</strong> In the text area, describe the shortcuts you need (e.g., "common shortcuts for web browsing in macOS", "media controls for Windows").</li>
+                    <li><strong>Click "Generate with AI":</strong> The AI will process your request and generate a list of shortcuts.</li>
+                    <li><strong>Review & Use:</strong> The generated shortcuts will be added to a new category called "AI GENERATED" in your shortcut pool. You can then drag and drop or click-to-map these shortcuts to your keymap.</li>
+                </ol>
+                
+                <h4>AI-Powered Macro Generator</h4>
+                <ol>
+                    <li><strong>Navigate to MACROS tab:</strong> Click on the "MACROS" tab.</li>
+                    <li><strong>Locate AI Macro Generator:</strong> Scroll down to the "AI-POWERED MACRO GENERATOR" section.</li>
+                    <li><strong>Enter Prompt:</strong> In the text area, describe the macros you need (e.g., "macro for opening calculator", "email signature macro").</li>
+                    <li><strong>Click "Generate with AI":</strong> The AI will process your request and generate new macros.</li>
+                    <li><strong>Review & Use:</strong> The generated macros will be added directly to your list of defined macros. You can then assign them to keys from the "MACRO" category in the "SHORTCUTS" pool.</li>
+                </ol>
+                <div class="note">
+                    <h3>Note:</h3>
+                    <p>AI features require an internet connection and a valid Gemini API key configured in the application's code.</p>
+                </div>
+
+                <h2>4. Configuration & Export</h2>
+                <h3>Exporting Your TrkEy Keymap</h3>
+                <p>Once you've defined your macros, combos, and shortcuts, the TrkEy Keymap Configurator provides a ready-to-use configuration that you can integrate with your TrkEy keyboard firmware.</p>
+                
+                <h3>Understanding the "Current Keymap JSON Preview"</h3>
+                <ol>
+                    <li>Navigate to the <strong>SETTINGS</strong> tab.</li>
+                    <li>The large text area labeled "Current Keymap JSON Preview" displays the raw configuration data generated by your current selections. This output is dynamically updated in real-time as you add, edit, or delete items.</li>
+                    <li><strong>Format:</strong> The output is in a JSON format, designed to be easily parsable by your TrkEy keyboard's firmware (e.g., QMK).</li>
+                    <li><strong>Sections:</strong> You'll generally see sections for:
+                        <ul>
+                            <li><code>layers</code>: Your defined keymap layers (e.g., 0, 1, 2, 3), with each key represented by its macro reference.</li>
+                            <li><code>macros</code>: Your defined macros with their names (e.g., <code>MACRO_HELLO_WORLD</code>) and sequences.</li>
+                            <li><code>combos</code>: An empty array for now, as combo functionality is not yet fully integrated into the export.</li>
+                        </ul>
+                    </li>
+                </ol>
+                
+                <h3>How to Export Your Keymap</h3>
+                <ol>
+                    <li><strong>Review the Output:</strong> Carefully examine the "Current Keymap JSON Preview" to ensure it matches your desired configuration.</li>
+                    <li><strong>Export as JSON File:</strong>
+                        <ul>
+                            <li>Click the "Export Keymap JSON" button.</li>
+                            <li>This will download a <code>trkey_config.json</code> file to your computer containing the entire configuration.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Integrate with Your TrkEy Keyboard:</strong>
+                        <ul>
+                            <li><strong>[Crucial Step]:</strong> Open the downloaded <code>trkey_config.json</code> file.</li>
+                            <li>You will need to copy its contents and paste them into the appropriate configuration file for your TrkEy keyboard's firmware.</li>
+                            <li>This is typically a <code>config.json</code>, <code>keymap.json</code>, or similar file located in your keyboard's firmware source code.</li>
+                            <li><strong>Example Path:</strong> <code>your_keyboard_firmware/src/keymaps/YOUR_KEYMAP_NAME/config.json</code></li>
+                            <li><strong>Specific Instructions:</strong> Refer to your TrkEy keyboard's specific firmware documentation for precise instructions on where to place this JSON data. You might need to replace an existing keymap definition or add it as a new section.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Flash Your Firmware:</strong>
+                        <ul>
+                            <li>After updating the configuration file, you will need to compile and flash your TrkEy keyboard's firmware to apply the changes.</li>
+                            <li>[Link to your TrkEy keyboard's flashing guide or relevant documentation for firmware updates].</li>
+                        </ul>
+                    </li>
+                </ol>
+                <div class="important">
+                    <h3>Important:</h3>
+                    <p>Always back up your original firmware files before making any modifications.</p>
+                </div>
+                
+                <h3>Loading JSON from Text Area</h3>
+                <p>You can also load an existing TrkEy keymap configuration by pasting its JSON directly into the configurator:</p>
+                <ol>
+                    <li><strong>Navigate to SETTINGS tab:</strong> Click on the "SETTINGS" tab in the sidebar.</li>
+                    <li><strong>Paste JSON:</strong> In the text area under "Load JSON from Text Area," paste your QMK keymap JSON.</li>
+                    <li><strong>Click "Load JSON":</strong> The configurator will parse the JSON and update the keymap grid and macro list accordingly.</li>
+                </ol>
+                
+                <h3>Connecting and Uploading to Micropad (Web Serial API)</h3>
+                <p>This feature allows direct communication with your Micropad device for uploading keymaps.</p>
+                <ol>
+                    <li><strong>Navigate to SETTINGS tab:</strong> Click on the "SETTINGS" tab in the sidebar.</li>
+                    <li><strong>Click "Connect to Micropad":</strong>
+                        <ul>
+                            <li>A browser prompt will appear asking you to select a serial port. Choose your Micropad device.</li>
+                            <li>If successful, a modal will confirm the connection. If it fails, ensure your device is connected and drivers are installed.</li>
+                            <li><strong>Note:</strong> This feature requires a Chromium-based browser (e.g., Google Chrome, Microsoft Edge) and Web Serial API support.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Click "Upload Keymap to Device":</strong>
+                        <ul>
+                            <li>Once connected, this button will become active.</li>
+                            <li>Clicking it will send your current keymap configuration directly to the connected Micropad.</li>
+                            <li>A success or failure modal will appear.</li>
+                            <li>The device should typically restart after a successful upload.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Click "Disconnect Micropad":</strong> When you are finished, click this button to safely disconnect from your device.</li>
+                </ol>
+
+                <h2>5. Troubleshooting & FAQ</h2>
+                <p>This page provides solutions to common issues you might encounter while using the TrkEy Keymap Configurator.</p>
+                
+                <h3>Frequently Asked Questions</h3>
+                <p><strong>Q: My macros aren't working on my keyboard after flashing the firmware.</strong></p>
+                <p><strong>A:</strong></p>
+                <ul>
+                    <li><strong>Double-check your firmware:</strong> Ensure you correctly updated the <code>config.json</code> (or equivalent) file in your keyboard's firmware with the output from the configurator.</li>
+                    <li><strong>Re-flash firmware:</strong> Sometimes a re-flash resolves inconsistencies.</li>
+                    <li><strong>Macro syntax:</strong> Verify that the macro sequences in the configurator use the correct syntax for special keys (e.g., <code>{KC_ENTER}</code> vs. just Enter). Refer to the Defining Macros section.</li>
+                    <li><strong>Keyboard compatibility:</strong> Confirm that your TrkEy keyboard model and firmware version fully support the macro and combo features generated by this configurator.</li>
+                </ul>
+                
+                <p><strong>Q: The "Preview Output" isn't updating.</strong></p>
+                <p><strong>A:</strong></p>
+                <ul>
+                    <li>Ensure your browser's JavaScript is enabled.</li>
+                    <li>Try refreshing the page (F5 or Ctrl+R).</li>
+                    <li>If you're running it locally, make sure all associated JavaScript and CSS are loaded correctly within the <code>index.html</code> file.</li>
+                </ul>
+                
+                <p><strong>Q: I deleted a macro by mistake. Can I undo it?</strong></p>
+                <p><strong>A:</strong> Unfortunately, the configurator does not currently have an "undo" feature for deletions. You will need to re-create the macro or reload a previous configuration/preset if you have one saved.</p>
+                
+                <p><strong>Q: The configurator looks broken / is not displaying correctly.</strong></p>
+                <p><strong>A:</strong></p>
+                <ul>
+                    <li><strong>Browser compatibility:</strong> This configurator is designed for modern web browsers like Chrome, Firefox, Edge, and Safari. Ensure your browser is up to date.</li>
+                    <li><strong>Clear cache:</strong> Try clearing your browser's cache for the GitHub Pages URL.</li>
+                    <li><strong>Zoom level:</strong> Ensure your browser's zoom level is set to 100%.</li>
+                </ul>
+                
+                <p><strong>Q: Can I save my current configuration to a file on my computer?</strong></p>
+                <p><strong>A:</strong> Yes, you can use the "Export Keymap JSON" button to download your current configuration as a <code>.json</code> file. You can then save this file anywhere on your computer.</p>
+                
+                <p><strong>Q: Why are the AI features not working?</strong></p>
+                <p><strong>A:</strong></p>
+                <ul>
+                    <li><strong>API Key:</strong> Ensure you have replaced the placeholder <code>const apiKey = "";</code> in the HTML file's JavaScript with your actual Gemini API key.</li>
+                    <li><strong>Internet Connection:</strong> The AI features require an active internet connection to communicate with the Gemini API.</li>
+                    <li><strong>CORS:</strong> If running the HTML file directly from your local file system (e.g., <code>file:///C:/.../index.html</code>), your browser might block API requests due to Cross-Origin Resource Sharing (CORS) policies. Try hosting the file on a simple local server, or use GitHub Pages.</li>
+                </ul>
+                
+                <p><strong>Q: Why can't I connect to my Micropad device?</strong></p>
+                <p><strong>A:</strong></p>
+                <ul>
+                    <li><strong>Browser Support:</strong> The Web Serial API is primarily supported by Chromium-based browsers (Google Chrome, Microsoft Edge). It will not work in Firefox or Safari.</li>
+                    <li><strong>Device Drivers:</strong> Ensure you have the necessary USB drivers installed for your Micropad device.</li>
+                    <li><strong>Device State:</strong> Your Micropad might need to be in a specific programming mode or state to be discoverable via Web Serial. Refer to your Micropad's documentation.</li>
+                    <li><strong>Permissions:</strong> You must grant your browser permission to access the serial port when prompted.</li>
+                </ul>
+                
+                <h3>Reporting Bugs</h3>
+                <p>If you encounter an issue not listed here, please consider reporting it:</p>
+                <ul>
+                    <li><strong>GitHub Issues:</strong> <a href="https://github.com/trinibos1/trkey-keymap-configurator/issues">https://github.com/trinibos1/trkey-keymap-configurator/issues</a> When reporting, please include:
+                        <ul>
+                            <li>A clear description of the problem.</li>
+                            <li>Steps to reproduce the issue.</li>
+                            <li>Your browser name and version.</li>
+                            <li>Any relevant screenshots or error messages from the browser console.</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h2>6. Technical Details</h2>
+                <h3>Technical Overview</h3>
+                <p>This page provides a high-level overview of the TrkEy Keymap Configurator's technical structure for those interested in its inner workings or contributing to its development.</p>
+                
+                <h3>Project Structure</h3>
+                <p>The TrkEy Keymap Configurator is a single-page web application built primarily with:</p>
+                <ul>
+                    <li><strong>HTML (<code>index.html</code>):</strong> The main structure of the web page, including all React components, CSS, and JavaScript embedded directly for single-file deployment.</li>
+                    <li><strong>CSS:</strong> Tailwind CSS is used for styling, loaded via CDN. Custom scrollbar styles are also embedded.</li>
+                    <li><strong>JavaScript (React):</strong> The core logic for the application, handling user interaction, state management, and output generation. JSX syntax is used, which is transpiled in the browser by Babel Standalone.</li>
+                </ul>
+                
+                <h3>Key Components (JavaScript/React)</h3>
+                <p>The application is structured around several React functional components:</p>
+                <ul>
+                    <li><strong>App:</strong> The root component that manages the overall application state, including:
+                        <ul>
+                            <li><code>keymap</code>: An object representing the 3x3 grid for each layer.</li>
+                            <li><code>activeLayer</code>: The currently selected layer for editing.</li>
+                            <li><code>shortcutPool</code>: An object containing all available shortcuts, categorized (including dynamically added "MACRO" and "AI GENERATED" categories).</li>
+                            <li><code>macros</code>: An array of user-defined macro objects.</li>
+                            <li><code>showModal</code>, <code>showMacroFormModal</code>, <code>showConfirmationModal</code>, <code>showAddShortcutModal</code>: States for controlling modal visibility.</li>
+                            <li><code>selectedKeyForMapping</code>: Stores the coordinates of a keymap cell selected for click-to-map.</li>
+                            <li><code>connectedPort</code>: Stores the Web Serial API port object if a device is connected.</li>
+                            <li><code>aiPrompt</code>, <code>aiMacroPrompt</code>: User input for AI generation.</li>
+                            <li><code>isGeneratingAiShortcuts</code>, <code>isGeneratingAiMacros</code>: Loading states for AI features.</li>
+                        </ul>
+                    </li>
+                    <li><strong>KeyComponent:</strong> A reusable component representing a single key on the micropad grid or a shortcut in the pool. It displays the combo and description, and handles drag-and-drop events.</li>
+                    <li><strong>Modal Components:</strong>
+                        <ul>
+                            <li><strong>Modal:</strong> A generic modal component for displaying information or error messages.</li>
+                            <li><strong>MacroFormModal:</strong> Specific modal for adding or editing macro details.</li>
+                            <li><strong>ConfirmationModal:</strong> Used for user confirmations (e.g., before deleting a macro).</li>
+                            <li><strong>AddShortcutModal:</strong> For adding new custom shortcuts to the pool.</li>
+                        </ul>
+                    </li>
+                </ul>
+                
+                <h3>How Output is Generated</h3>
+                <ul>
+                    <li><strong>State Management:</strong> User interactions (e.g., assigning a shortcut, defining a macro) update the application's internal React state (e.g., the keymap object, the macros array).</li>
+                    <li><strong><code>useEffect</code> Hooks:</strong> React's <code>useEffect</code> hooks are used to perform side effects, such as:
+                        <ul>
+                            <li>Loading/saving profiles to <code>localStorage</code>.</li>
+                            <li>Updating the "MACRO" category in <code>shortcutPool</code> when macros change.</li>
+                            <li>Attaching/detaching keyboard event listeners for the "KEY TESTER."</li>
+                        </ul>
+                    </li>
+                    <li><strong>JSON Transformation:</strong> When the relevant state changes, the <code>exportKeymap</code> function (or similar logic for the preview) transforms the internal JavaScript objects into the required JSON format for the TrkEy keyboard firmware.
+                        <ul>
+                            <li>Macro names are sanitized (uppercased, spaces replaced with underscores, special characters removed) to conform to typical firmware naming conventions.</li>
+                            <li>The 3x3 keymap grid is flattened into a 9-element array for each layer.</li>
+                        </ul>
+                    </li>
+                    <li><strong><code>JSON.stringify()</code>:</strong> The transformed JavaScript object is then converted into a readable JSON string using <code>JSON.stringify(..., null, 2)</code> for pretty-printing.</li>
+                    <li><strong>Display & Download:</strong> The resulting JSON string is displayed in the "Current Keymap JSON Preview" <code>&lt;pre&gt;</code> tag. When "Export Keymap JSON" is clicked, this string is used to create a Blob and trigger a file download.</li>
+                </ul>
+                
+                <h3>Web Serial API Integration</h3>
+                <p>The <code>connectToDevice</code>, <code>disconnectDevice</code>, and <code>uploadKeymapToConnectedDevice</code> functions handle interaction with physical devices. They use <code>navigator.serial.requestPort()</code>, <code>port.open()</code>, <code>port.writable.getWriter()</code>, and <code>writer.write()</code> to communicate with the serial port. Data is sent as a UTF-8 encoded JSON string.</p>
+                
+                <h3>Local Development (for Contributors)</h3>
+                <p>To run and modify this application locally:</p>
+                <ol>
+                    <li><strong>Save the File:</strong> Save the entire HTML content as <code>index.html</code>.</li>
+                    <li><strong>Open in Browser:</strong> Open <code>index.html</code> directly in a modern web browser (preferably Chrome or Edge for Web Serial API support).</li>
+                    <li><strong>Edit Code:</strong> You can directly edit the JavaScript code within the <code>&lt;script type="text/babel"&gt;</code> tags and refresh your browser to see changes.</li>
+                </ol>
+                <div class="note">
+                    <h3>Note:</h3>
+                    <p>Since this is a single-file setup using Babel Standalone, there's no traditional <code>npm install</code> or <code>npm start</code> command. All dependencies (React, ReactDOM, Babel) are loaded via CDNs.</p>
+                </div>
+
+                <h2>7. Contributing</h2>
+                <h3>Contributing to TrkEy Keymap Configurator</h3>
+                <p>We welcome contributions to improve the TrkEy Keymap Configurator! Whether it's reporting bugs, suggesting features, or submitting code, your help is appreciated. But please contact on <a href="https://discord.gg/zJr3sUYY4g">https://discord.gg/zJr3sUYY4g</a></p>
+                
+                <h3>Code Style</h3>
+                <ul>
+                    <li>Maintain consistency with the existing code's React functional component style, state management, and Tailwind CSS class usage.</li>
+                    <li>Add comments where necessary to explain complex logic.</li>
+                </ul>
+                <p>We appreciate your contributions!</p>
+            `,
+            'about': `
+                <h1>About TriniBos1 Wiki</h1>
+                <p>The TriniBos1 Wiki is maintained by TriniBos1 to provide clear and accessible documentation for all our projects.</p>
+                <p>Our vision is to build a community-driven knowledge base that empowers both users and developers to understand, use, and contribute to our software and initiatives.</p>
+                <h2>Our Mission</h2>
+                <ul>
+                    <li>To provide accurate and up-to-date documentation.</li>
+                    <li>To foster collaboration and contribution from the community.</li>
+                    <li>To make complex technical information easy to understand.</li>
+                </ul>
+                <p>Thank you for visiting!</p>
+            `,
+            'contact': `
+                <h1>Contact Us</h1>
+                <p>If you have any questions, feedback, or need support, please reach out to us:</p>
+                <ul>
+                    <li><strong>Discord:</strong> Join our community on <a href="https://discord.gg/zJr3sUYY4g">Discord</a> for direct support and discussions.</li>
+                    <li><strong>GitHub:</strong> For bug reports or feature requests, please use the <a href="https://github.com/trinibos1/trkey-keymap-configurator/issues">Issues page on GitHub</a>.</li>
+                </ul>
+            `
+            // To add a new page:
+            // 1. Add a new key (e.g., 'new-page-id') to the wikiContent object below.
+            // 2. The value should be a backtick-quoted string (`) containing all the HTML content for that page.
+            // 3. Add a corresponding link to your index.html sidebar navigation (e.g., <li><a href="#new-page-id" class="nav-link">New Page Name</a></li>).
+            /*
+            'new-example-page': `
+                <h1>This is a New Example Page!</h1>
+                <p>You can add any HTML content here.</p>
+                <p>This demonstrates how easy it is to extend your wiki.</p>
+                <ul>
+                    <li>Item 1</li>
+                    <li>Item 2</li>
+                </ul>
+            `,
+            */
+        };
+
+        // --- Core Logic ---
+        const wikiContentDiv = document.getElementById('wiki-content');
+        // Select all nav links that have an href, excluding the dropdown trigger
+        const navLinks = document.querySelectorAll('.main-nav a[href^="#"]');
+        
+        let currentPageId = 'home'; // Default page
+
+        // Function to load content based on pageId
+        function loadContent(pageId) {
+            const content = wikiContent[pageId];
+
+            if (content) {
+                wikiContentDiv.innerHTML = content;
+                currentPageId = pageId;
+                // Update URL hash for direct linking
+                window.location.hash = `#${pageId}`;
+            } else {
+                // Fallback to "Page Not Found" message
+                wikiContentDiv.innerHTML = `
+                    <h1 style="color: var(--accent-red);">Page Not Found</h1>
+                    <p>The content for "${pageId}" is not available.</p>
+                    <p>Please navigate to a different page.</p>
+                `;
+                console.warn(`Content for page "${pageId}" not found.`);
+            }
+
+            // Update active state in navigation
+            navLinks.forEach(link => {
+                if (link.getAttribute('href') === `#${pageId}`) {
+                    link.classList.add('active');
+                    // If it's a sub-link, also activate its parent 'Projects' link
+                    const parentLi = link.closest('li');
+                    if (parentLi && parentLi.parentElement.classList.contains('sub-nav')) {
+                         parentLi.parentElement.previousElementSibling.classList.add('active'); // Activate the 'Projects' dropdown trigger
+                    }
+                } else {
+                    link.classList.remove('active');
+                    // Also ensure parent 'Projects' link is deactivated if no sub-link is active
+                    const parentLi = link.closest('li');
+                    if (parentLi && parentLi.parentElement.classList.contains('sub-nav')) {
+                        const projectsTrigger = parentLi.parentElement.previousElementSibling;
+                        if (projectsTrigger && projectsTrigger.classList.contains('dropdown-trigger')) {
+                            let anySubLinkActive = false;
+                            parentLi.parentElement.querySelectorAll('.sub-link').forEach(sub => {
+                                if (sub.classList.contains('active')) {
+                                    anySubLinkActive = true;
+                                }
+                            });
+                            if (!anySubLinkActive) {
+                                projectsTrigger.classList.remove('active');
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Event listener for navigation clicks (only for links with href)
+        navLinks.forEach(link => {
+            link.addEventListener('click', (event) => {
+                event.preventDefault(); // Prevent default link behavior
+                const pageId = link.getAttribute('href').substring(1); // Get page ID from href (e.g., "home")
+                loadContent(pageId);
+            });
+        });
+
+        // Handle initial page load and hash changes
+        function handleInitialLoad() {
+            // Load page based on URL hash, or default to 'home'
+            const initialPageId = window.location.hash ? window.location.hash.substring(1) : 'home';
+            loadContent(initialPageId);
+        }
+
+        // Listen for hash changes (e.g., if someone manually changes #home to #about)
+        window.addEventListener('hashchange', () => {
+            const newPageId = window.location.hash ? window.location.hash.substring(1) : 'home';
+            if (newPageId !== currentPageId) { // Only reload if it's a different page
+                loadContent(newPageId);
+            }
+        });
+
+        // Run on page load
+        document.addEventListener('DOMContentLoaded', handleInitialLoad);
+    </script>
+</body>
+</html>
