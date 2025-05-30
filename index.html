@@ -58,6 +58,17 @@
             padding-bottom: 10px;
         }
 
+        .logo {
+            display: block; /* Ensures it takes up full width */
+            max-width: 150px; /* Max width for the logo */
+            height: auto; /* Maintain aspect ratio */
+            margin: 0 auto 20px auto; /* Center and add bottom margin */
+            border-radius: 8px; /* Slightly rounded corners */
+            border: 2px solid var(--highlight-green); /* Green border */
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.5); /* Green glow effect */
+        }
+
+
         .main-nav ul {
             list-style: none;
             padding: 0;
@@ -222,6 +233,7 @@
     <div class="container">
         <aside class="sidebar">
             <h1 class="wiki-title">TriniBos1 Wiki</h1>
+            <img src="logo.png" alt="TriniBos1 Logo" class="logo">
             <nav class="main-nav">
                 <ul>
                     <li><a href="#home" class="nav-link active">Home</a></li>
