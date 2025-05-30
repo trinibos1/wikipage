@@ -227,6 +227,8 @@
                     <li><a href="#home" class="nav-link active">Home</a></li>
                     <li><a href="#projects" class="nav-link">Projects</a></li>
                     <li><a href="#trkey-keymap-configurator" class="nav-link">TrkEy Keymap Configurator</a></li>
+                    <li><a href="#about" class="nav-link">About</a></li>
+                    <li><a href="#contact" class="nav-link">Contact</a></li>
                     </ul>
             </nav>
             <div class="language-selector">
@@ -249,9 +251,9 @@
     </div>
 
     <script>
-        // JavaScript for Dynamic Content Loading from Google Docs (Published to Web)
-        // IMPORTANT: Each Google Doc MUST be published to the web (File > Share > Publish to web)
-        // and you must use the generated '/pub' URL.
+        // JavaScript for Dynamic Content Loading
+        // Pages can either have their content directly embedded as an HTML string,
+        // or be fetched from a published Google Doc URL (which must end with /pub).
         const wikiPageUrls = {
             'home': `
                 <h1>Welcome to TriniBos1 Wiki!</h1>
@@ -305,20 +307,16 @@
                 </ul>
             `
             // To add a new page:
-            // 1. Create a Google Doc for each language (English, Korean, Japanese, Spanish).
-            // 2. Publish EACH Google Doc to the web (File > Share > Publish to web) and copy its /pub URL.
-            // 3. Add a new key (e.g., 'new-page-id') to the 'wikiPageUrls' object here.
-            //    The value for this key will be an object containing the /pub URLs for each language.
-            //    Example:
-            //    'my-new-project': {
-            //        'en': 'https://docs.google.com/document/d/e/2PACX-1vR_NEW_PROJECT_EN/pub',
-            //        'ko': 'https://docs.google.com/document/d/e/2PACX-1vR_NEW_PROJECT_KO/pub',
-            //        'ja': 'https://docs.google.com/document/d/e/2PACX-1vR_NEW_PROJECT_JA/pub',
-            //        'es': 'https://docs.google.com/document/d/e/2PACX-1vR_NEW_PROJECT_ES/pub'
-            //    },
-            // 4. Add a corresponding <li> with an <a> tag in the HTML sidebar navigation,
-            //    setting href="#your-page-id" and class="nav-link".
-            //    Example: <li><a href="#my-new-project" class="nav-link">My New Project</a></li>
+            // If the page content is directly embedded HTML, add it as a string to wikiPageUrls.
+            // If the page content is from a Google Doc, add an object with language URLs to wikiPageUrls.
+            // Then, add a corresponding <li> with an <a> tag in the HTML sidebar navigation.
+            // Example for embedded HTML: 'my-new-embedded-page': `<h1>My New Embedded Page!</h1><p>Content here.</p>`,
+            // Example for Google Doc:
+            // 'my-new-doc-page': {
+            //     'en': 'https://docs.google.com/document/d/e/2PACX-1vR_NEW_DOC_EN/pub',
+            //     'ko': 'https://docs.google.com/document/d/e/2PACX-1vR_NEW_DOC_KO/pub',
+            //     // ... other languages
+            // },
         };
 
         // --- Core Logic ---
@@ -334,7 +332,7 @@
             let contentToDisplay = '';
             const pageEntry = wikiPageUrls[pageId];
 
-            // Check if the content is directly embedded HTML (like 'home', 'about', 'contact')
+            // Check if the content is directly embedded HTML
             if (typeof pageEntry === 'string') {
                 contentToDisplay = pageEntry;
             } else if (pageEntry && pageEntry[lang]) {
