@@ -66,6 +66,7 @@
 
         .main-nav li {
             margin-bottom: 10px;
+            position: relative; /* Needed for dropdown positioning */
         }
 
         .main-nav a {
@@ -84,33 +85,46 @@
             color: var(--primary-bg); /* Dark text on green hover */
         }
 
-        /* Language Selector Styles (still present in CSS but removed from HTML as per previous request) */
-        .language-selector {
-            margin-top: auto; /* Pushes to the bottom */
-            padding-top: 20px;
-            border-top: 1px solid var(--border-color);
-            text-align: center;
+        /* Dropdown specific styles */
+        .dropdown .dropdown-toggle {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-right: 15px; /* Space for arrow */
         }
 
-        .language-selector label {
-            display: block;
-            margin-bottom: 5px;
-            color: var(--text-color);
+        .dropdown .arrow {
+            font-size: 0.8em;
+            transition: transform 0.3s ease;
         }
 
-        .language-selector select {
-            width: 80%;
-            padding: 8px;
-            border-radius: 5px;
-            background-color: var(--primary-bg);
-            color: var(--text-color);
-            border: 1px solid var(--highlight-green);
-            cursor: pointer;
+        .dropdown:hover .arrow {
+            transform: rotate(180deg);
         }
 
-        .language-selector select:focus {
-            outline: none;
-            box-shadow: 0 0 0 2px var(--highlight-green);
+        .dropdown-menu {
+            list-style: none;
+            padding: 0;
+            margin: 5px 0 0 20px; /* Indent dropdown items */
+            background-color: var(--primary-bg); /* Darker background for menu */
+            border-left: 2px solid var(--highlight-green); /* Green border */
+            display: none; /* Hidden by default */
+            position: relative; /* Position relative to parent list item */
+            z-index: 10; /* Ensure it's above other content if needed */
+            border-radius: 0 5px 5px 0;
+        }
+
+        .dropdown-menu li {
+            margin-bottom: 0; /* Remove extra margin for sub-items */
+        }
+
+        .dropdown-menu a {
+            padding: 8px 15px 8px 25px; /* Adjust padding for sub-items */
+            font-size: 0.95em;
+        }
+
+        .dropdown:hover .dropdown-menu {
+            display: block; /* Show menu on hover */
         }
 
         /* Main Content Styling */
@@ -225,13 +239,17 @@
             <nav class="main-nav">
                 <ul>
                     <li><a href="#home" class="nav-link active">Home</a></li>
-                    <li><a href="#projects" class="nav-link">Projects</a></li>
-                    <li><a href="#trkey-keymap-configurator" class="nav-link">TrkEy Keymap Configurator</a></li>
+                    <li class="dropdown">
+                        <a href="#projects" class="nav-link dropdown-toggle">Projects <span class="arrow">▼</span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#trkey-keymap-configurator" class="nav-link">TrkEy Keymap Configurator</a></li>
+                            </ul>
+                    </li>
                     <li><a href="#about" class="nav-link">About</a></li>
                     <li><a href="#contact" class="nav-link">Contact</a></li>
-                    </ul>
+                </ul>
             </nav>
-            </aside>
+        </aside>
 
         <main class="content" id="wiki-content">
             <div style="text-align: center; padding: 50px;">
@@ -243,8 +261,6 @@
 
     <script>
         // JavaScript for Dynamic Content Loading
-        // Pages can either have their content directly embedded as an HTML string,
-        // or be fetched from a published Google Doc URL (which must end with /pub).
         const wikiPageUrls = {
             'home': `
                 <h1>Welcome to TriniBos1 Wiki!</h1>
@@ -257,7 +273,7 @@
                 <p>Explore the projects documented on TriniBos1 Wiki:</p>
                 <ul>
                     <li><a href="#trkey-keymap-configurator">TrkEy Keymap Configurator</a>: A web-based utility for creating and managing custom keymaps for TrkEy keyboards.</li>
-                    </ul>
+                </ul>
 
                 <h2>How to Use This Wiki</h2>
                 <ul>
@@ -265,7 +281,11 @@
                     <li><strong>For Project Owners/Contributors:</strong> If you manage a project hosted here or wish to add one, please refer to our <a href="#contact">Contact page</a> for contribution guidelines.</li>
                 </ul>
             `,
-            'projects': 'https://docs.google.com/document/d/e/2PACX-1vR_YOUR_PROJECTS_DOC_ID_EN/pub', // REMEMBER TO REPLACE THIS WITH YOUR ACTUAL PUBLISHED GOOGLE DOC URL for English Projects
+            // Updated 'projects' to be a message since it's now a dropdown trigger
+            'projects': `
+                <h1>Please Select a Project</h1>
+                <p>Use the dropdown menu under "Projects" in the sidebar to navigate to a specific project page, such as TrkEy Keymap Configurator.</p>
+            `,
             'trkey-keymap-configurator': 'https://docs.google.com/document/d/e/2PACX-1vTKMlVJdMZLpRsVtcrg6x9wskp-McY6Q6vDAvlvV20Fn8Gb9KBUH_iA2MlFVidENjDLBiynX8yYUmYE/pub', // Your provided TrkEy Doc URL
             'about': `
                 <h1>About TriniBos1 Wiki</h1>
@@ -287,18 +307,11 @@
                     <li><strong>GitHub:</strong> For bug reports or feature requests, please use the <a href="https://github.com/trinibos1/trkey-keymap-configurator/issues">Issues page on GitHub</a>.</li>
                 </ul>
             `
-            // To add a new page:
-            // If the page content is directly embedded HTML, add it as a string to wikiPageUrls.
-            // If the page content is from a Google Doc, add its /pub URL to wikiPageUrls.
-            // Then, add a corresponding <li> with an <a> tag in the HTML sidebar navigation.
-            // Example for embedded HTML: 'my-new-embedded-page': `<h1>My New Embedded Page!</h1><p>Content here.</p>`,
-            // Example for Google Doc: 'my-new-doc-page': 'https://docs.google.com/document/d/e/2PACX-1vR_NEW_DOC/pub',
         };
 
         // --- Core Logic ---
         const wikiContentDiv = document.getElementById('wiki-content');
         const navLinks = document.querySelectorAll('.main-nav a[href^="#"]');
-        // const langSelect = document.getElementById('lang-select'); // Removed as language selector is removed
 
         let currentPageId = 'home'; // Default page
 
@@ -307,7 +320,6 @@
             let contentToDisplay = '';
             const pageEntry = wikiPageUrls[pageId];
 
-            // If a page entry is not found, log a warning and display an error.
             if (!pageEntry) {
                 wikiContentDiv.innerHTML = `
                     <h1 style="color: var(--accent-red);">Page Not Found</h1>
@@ -325,7 +337,10 @@
                 // If it's a string that starts with 'http', assume it's a Google Doc URL
                 const url = pageEntry;
 
-                if (url.includes('YOUR_')) { // Check if URL is still a placeholder
+                // Log the URL being fetched for debugging
+                console.log(`Attempting to fetch content for ${pageId} from URL: ${url}`);
+
+                if (url.includes('YOUR_PROJECTS_DOC_ID_EN')) { // Check if URL is still a placeholder
                     wikiContentDiv.innerHTML = `
                         <h1 style="color: var(--accent-red);">Page Not Found / URL Placeholder</h1>
                         <p>The content for "${pageId}" is not available or its Google Doc URL is a placeholder.</p>
@@ -346,10 +361,12 @@
 
                 try {
                     const response = await fetch(url);
+                    console.log(`Fetch response status for ${pageId}: ${response.status}`);
                     if (!response.ok) {
                         throw new Error(`HTTP error! Status: ${response.status} for ${url}`);
                     }
                     const htmlContent = await response.text();
+                    console.log(`Successfully fetched HTML content for ${pageId}.`);
                     const parser = new DOMParser();
                     const doc = parser.parseFromString(htmlContent, 'text/html');
                     
@@ -360,6 +377,7 @@
                     const footerDiv = doc.querySelector('.doc-footer, .kix-page-footer'); 
                     if (footerDiv) {
                         footerDiv.remove();
+                        // Re-get innerHTML after removal to ensure it's removed from the string
                         bodyContent = doc.body.innerHTML; 
                     }
                     // Also remove the "Updated automatically every 5 minutes" text if it's separate
@@ -371,11 +389,11 @@
                     contentToDisplay = bodyContent;
 
                 } catch (error) {
-                    console.error('Failed to load content from Google Doc:', error);
+                    console.error(`Failed to load content from Google Doc for ${pageId}:`, error);
                     wikiContentDiv.innerHTML = `
                         <h1 style="color: var(--accent-red);">Error Loading Page</h1>
                         <p>Could not retrieve content from Google Docs for "${pageId}".</p>
-                        <p>Please ensure the Google Doc is published to the web and the URL is correct.</p>
+                        <p>Please ensure the Google Doc is published to the web and the URL is correct, and check your browser's console for more details.</p>
                         <p>Error details: ${error.message}</p>
                     `;
                     return; // Exit if fetch fails
@@ -397,10 +415,22 @@
 
             // Update active state in navigation
             navLinks.forEach(link => {
+                // For dropdowns, also ensure the parent 'Projects' link becomes active
+                const parentLi = link.closest('li');
                 if (link.getAttribute('href') === `#${pageId}`) {
                     link.classList.add('active');
+                    if (parentLi && parentLi.classList.contains('dropdown')) {
+                        parentLi.querySelector('.dropdown-toggle').classList.add('active');
+                    }
                 } else {
                     link.classList.remove('active');
+                    if (parentLi && parentLi.classList.contains('dropdown')) {
+                         // Check if any child link is active, if not, deactivate parent
+                        const activeChild = parentLi.querySelector('.dropdown-menu .nav-link.active');
+                        if (!activeChild) {
+                            parentLi.querySelector('.dropdown-toggle').classList.remove('active');
+                        }
+                    }
                 }
             });
         }
@@ -416,7 +446,6 @@
 
         // Handle initial page load and hash changes
         function handleInitialLoad() {
-            // Load page based on URL hash, or default to 'home'
             const initialPageId = window.location.hash ? window.location.hash.substring(1) : 'home';
             loadContent(initialPageId);
         }
