@@ -58,8 +58,6 @@
             padding-bottom: 10px;
         }
 
-        /* Removed .logo styles */
-
         .main-nav ul {
             list-style: none;
             padding: 0;
@@ -86,7 +84,7 @@
             color: var(--primary-bg); /* Dark text on green hover */
         }
 
-        /* Language Selector Styles */
+        /* Language Selector Styles (still present in CSS but removed from HTML as per previous request) */
         .language-selector {
             margin-top: auto; /* Pushes to the bottom */
             padding-top: 20px;
@@ -305,7 +303,7 @@
         let currentPageId = 'home'; // Default page
 
         // Function to load content from a URL or directly from string
-        async function loadContent(pageId) { // Removed 'lang' parameter
+        async function loadContent(pageId) {
             let contentToDisplay = '';
             const pageEntry = wikiPageUrls[pageId];
 
@@ -320,13 +318,14 @@
                 return;
             }
 
-            // Check if the content is directly embedded HTML
-            if (typeof pageEntry === 'string') {
+            // Check if the content is directly embedded HTML (string that does NOT start with 'http')
+            if (typeof pageEntry === 'string' && !pageEntry.startsWith('http')) {
                 contentToDisplay = pageEntry;
-            } else { // Assume it's a Google Doc URL
-                const url = pageEntry; // Directly use the URL
+            } else if (typeof pageEntry === 'string' && pageEntry.startsWith('http')) {
+                // If it's a string that starts with 'http', assume it's a Google Doc URL
+                const url = pageEntry;
 
-                if (url.includes('YOUR_')) { // Check if URL is placeholder
+                if (url.includes('YOUR_')) { // Check if URL is still a placeholder
                     wikiContentDiv.innerHTML = `
                         <h1 style="color: var(--accent-red);">Page Not Found / URL Placeholder</h1>
                         <p>The content for "${pageId}" is not available or its Google Doc URL is a placeholder.</p>
@@ -358,17 +357,13 @@
                     let bodyContent = doc.body.innerHTML;
 
                     // Remove Google Docs footer: "Published using Google Docs Report abuseLearn more"
-                    // This footer is often within a div with a specific class or ID, or just at the end.
-                    // A common pattern is a div with class "footer" or "doc-footer".
-                    // We'll try to find and remove it.
-                    const footerDiv = doc.querySelector('.doc-footer, .kix-page-footer'); // Common Google Docs footer classes
+                    const footerDiv = doc.querySelector('.doc-footer, .kix-page-footer'); 
                     if (footerDiv) {
                         footerDiv.remove();
-                        bodyContent = doc.body.innerHTML; // Update bodyContent after removal
+                        bodyContent = doc.body.innerHTML; 
                     }
                     // Also remove the "Updated automatically every 5 minutes" text if it's separate
                     bodyContent = bodyContent.replace(/Updated automatically every 5 minutes/g, '');
-
 
                     // Replace "trkey" with "Trkey" (case-insensitive global replacement)
                     bodyContent = bodyContent.replace(/trkey/gi, 'Trkey');
@@ -385,6 +380,14 @@
                     `;
                     return; // Exit if fetch fails
                 }
+            } else {
+                // This case handles any other unexpected types for pageEntry
+                wikiContentDiv.innerHTML = `
+                    <h1 style="color: var(--accent-red);">Invalid Page Entry Type</h1>
+                    <p>The entry for "${pageId}" in <code>wikiPageUrls</code> is not a valid HTML string or URL.</p>
+                `;
+                console.error(`Invalid page entry type for "${pageId}".`);
+                return;
             }
 
             // Display the content if it was loaded successfully
@@ -407,40 +410,22 @@
             link.addEventListener('click', (event) => {
                 event.preventDefault(); // Prevent default link behavior
                 const pageId = link.getAttribute('href').substring(1); // Get page ID from href (e.g., "home")
-                loadContent(pageId); // Removed 'currentLang' parameter
+                loadContent(pageId);
             });
         });
 
-        // Removed language selector event listener as language selector is removed
-        /*
-        langSelect.addEventListener('change', (event) => {
-            currentLang = event.target.value;
-            localStorage.setItem('wikiLang', currentLang); // Save preference
-            loadContent(currentPageId, currentLang); // Reload current page with new language
-        });
-        */
-
         // Handle initial page load and hash changes
         function handleInitialLoad() {
-            // Removed language preference loading as language selector is removed
-            /*
-            const savedLang = localStorage.getItem('wikiLang');
-            if (savedLang && ['en', 'ko', 'ja', 'es'].includes(savedLang)) {
-                currentLang = savedLang;
-                langSelect.value = savedLang;
-            }
-            */
-
             // Load page based on URL hash, or default to 'home'
             const initialPageId = window.location.hash ? window.location.hash.substring(1) : 'home';
-            loadContent(initialPageId); // Removed 'currentLang' parameter
+            loadContent(initialPageId);
         }
 
         // Listen for hash changes (e.g., if someone manually changes #home to #about)
         window.addEventListener('hashchange', () => {
             const newPageId = window.location.hash ? window.location.hash.substring(1) : 'home';
             if (newPageId !== currentPageId) { // Only reload if it's a different page
-                loadContent(newPageId); // Removed 'currentLang' parameter
+                loadContent(newPageId);
             }
         });
 
