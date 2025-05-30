@@ -267,7 +267,7 @@
                     <li><strong>For Project Owners/Contributors:</strong> If you manage a project hosted here or wish to add one, please refer to our <a href="#contact">Contact page</a> for contribution guidelines.</li>
                 </ul>
             `,
-            'projects': 'https://docs.google.com/document/d/e/2PACX-1vR_YOUR_PROJECTS_DOC_ID_EN/pub', // REPLACE WITH YOUR ACTUAL PUBLISHED GOOGLE DOC URL for English Projects
+            'projects': 'https://docs.google.com/document/d/e/2PACX-1vR_YOUR_PROJECTS_DOC_ID_EN/pub', // REMEMBER TO REPLACE THIS WITH YOUR ACTUAL PUBLISHED GOOGLE DOC URL for English Projects
             'trkey-keymap-configurator': 'https://docs.google.com/document/d/e/2PACX-1vTKMlVJdMZLpRsVtcrg6x9wskp-McY6Q6vDAvlvV20Fn8Gb9KBUH_iA2MlFVidENjDLBiynX8yYUmYE/pub', // Your provided TrkEy Doc URL
             'about': `
                 <h1>About TriniBos1 Wiki</h1>
@@ -309,6 +309,17 @@
             let contentToDisplay = '';
             const pageEntry = wikiPageUrls[pageId];
 
+            // If a page entry is not found, log a warning and display an error.
+            if (!pageEntry) {
+                wikiContentDiv.innerHTML = `
+                    <h1 style="color: var(--accent-red);">Page Not Found</h1>
+                    <p>The content for "${pageId}" is not available in the <code>wikiPageUrls</code> object.</p>
+                    <p>Please check the page ID or available content.</p>
+                `;
+                console.warn(`Content for page "${pageId}" not found in wikiPageUrls.`);
+                return;
+            }
+
             // Check if the content is directly embedded HTML
             if (typeof pageEntry === 'string') {
                 contentToDisplay = pageEntry;
@@ -326,12 +337,13 @@
                     return;
                 }
 
+                // Display loading indicator only for external fetches
                 wikiContentDiv.innerHTML = `
                     <div style="text-align: center; padding: 50px;">
                         <h2 style="color: var(--highlight-green);">Loading content...</h2>
                         <p>Please wait while we fetch the page from Google Docs.</p>
                     </div>
-                `; // Loading indicator
+                `; 
 
                 try {
                     const response = await fetch(url);
@@ -373,15 +385,6 @@
                     `;
                     return; // Exit if fetch fails
                 }
-            } else {
-                // Fallback for pages not found in wikiPageUrls
-                wikiContentDiv.innerHTML = `
-                    <h1 style="color: var(--accent-red);">Page Not Found</h1>
-                    <p>The content for "${pageId}" is not available in any format.</p>
-                    <p>Please check the page ID or available content.</p>
-                `;
-                console.warn(`Content for page "${pageId}" not found in wikiPageUrls.`);
-                return;
             }
 
             // Display the content if it was loaded successfully
