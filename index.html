@@ -66,7 +66,6 @@
 
         .main-nav li {
             margin-bottom: 10px;
-            position: relative; /* Crucial for positioning the dropdown */
         }
 
         .main-nav a {
@@ -85,50 +84,8 @@
             color: var(--primary-bg); /* Dark text on green hover */
         }
 
-        /* Dropdown specific styles */
-        .sub-nav {
-            list-style: none;
-            padding: 0; /* Remove padding-left from parent */
-            margin: 0;
-            position: absolute; /* Position relative to parent li */
-            top: 100%; /* Position below the parent link */
-            left: 0;
-            background-color: var(--secondary-bg); /* Background for dropdown */
-            min-width: 100%; /* Ensure it's at least as wide as parent */
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.7); /* Dropdown shadow */
-            border-radius: 5px;
-            z-index: 10; /* Ensure it appears above other content */
-            display: none; /* Hidden by default */
-            border: 1px solid var(--border-color);
-            overflow: hidden; /* For rounded corners */
-        }
-
-        .has-dropdown:hover > .sub-nav {
-            display: block; /* Show on hover of the parent li */
-        }
-
-        .sub-nav .sub-link {
-            font-size: 0.9em;
-            padding: 8px 15px; /* Adjust padding for sub-links */
-            background-color: transparent; /* Start transparent */
-            color: var(--text-color);
-        }
-
-        .sub-nav .sub-link:hover {
-            background-color: var(--highlight-green);
-            color: var(--primary-bg);
-        }
-
-        /* Ensure the dropdown trigger doesn't have a blue link underline */
-        .dropdown-trigger {
-            text-decoration: none !important; /* Override default link underline */
-        }
-
-        /* Adjust active state for dropdown trigger if a sub-link is active */
-        .has-dropdown .dropdown-trigger.active {
-            background-color: var(--highlight-green);
-            color: var(--primary-bg);
-        }
+        /* Removed dropdown specific styles as per request */
+        /* .sub-nav, .has-dropdown, .dropdown-trigger styles are removed or reverted */
 
         /* Main Content Styling */
         .content {
@@ -233,6 +190,34 @@
             margin-top: 0;
             border-bottom: none;
         }
+
+        .language-selector {
+            margin-top: auto; /* Pushes to the bottom */
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+        }
+
+        .language-selector label {
+            display: block;
+            margin-bottom: 5px;
+            color: var(--text-color);
+        }
+
+        .language-selector select {
+            width: 80%;
+            padding: 8px;
+            border-radius: 5px;
+            background-color: var(--primary-bg);
+            color: var(--text-color);
+            border: 1px solid var(--highlight-green);
+            cursor: pointer;
+        }
+
+        .language-selector select:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px var(--highlight-green);
+        }
     </style>
 </head>
 <body>
@@ -242,14 +227,19 @@
             <nav class="main-nav">
                 <ul>
                     <li><a href="#home" class="nav-link active">Home</a></li>
-                    <li class="has-dropdown"> <a class="nav-link dropdown-trigger">Projects</a> <ul class="sub-nav">
-                            <li><a href="#trkey-keymap-configurator" class="nav-link sub-link">TrkEy Keymap Configurator</a></li>
-                            </ul>
-                    </li>
-                    <li><a href="#about" class="nav-link">About TriniBos1 Wiki</a></li>
-                    <li><a href="#contact" class="nav-link">Contact</a></li>
-                </ul>
+                    <li><a href="#projects" class="nav-link">Projects</a></li>
+                    <li><a href="#trkey-keymap-configurator" class="nav-link sub-link">TrkEy Keymap Configurator</a></li>
+                    </ul>
             </nav>
+            <div class="language-selector">
+                <label for="lang-select">Language:</label>
+                <select id="lang-select">
+                    <option value="en">English</option>
+                    <option value="ko">한국어</option>
+                    <option value="ja">日本語</option>
+                    <option value="es">Español</option>
+                </select>
+            </div>
         </aside>
 
         <main class="content" id="wiki-content">
@@ -265,36 +255,74 @@
         // IMPORTANT: Each Google Doc MUST be published to the web (File > Share > Publish to web)
         // and you must use the generated '/pub' URL.
         const wikiPageUrls = {
-            'home': 'https://docs.google.com/document/d/e/2PACX-1vR_YOUR_HOME_DOC_ID/pub', // REPLACE WITH YOUR ACTUAL PUBLISHED GOOGLE DOC URL
-            'trkey-keymap-configurator': 'https://docs.google.com/document/d/e/2PACX-1vTKMlVJdMZLpRsVtcrg6x9wskp-McY6Q6vDAvlvV20Fn8Gb9KBUH_iA2MlFVidENjDLBiynX8yYUmYE/pub', // REPLACED WITH THE PROVIDED PUBLISHED GOOGLE DOC URL
-            'about': 'https://docs.google.com/document/d/e/2PACX-1vR_YOUR_ABOUT_DOC_ID/pub', // REPLACE WITH YOUR ACTUAL PUBLISHED GOOGLE DOC URL
-            'contact': 'https://docs.google.com/document/d/e/2PACX-1vR_YOUR_CONTACT_DOC_ID/pub', // REPLACE WITH YOUR ACTUAL PUBLISHED GOOGLE DOC URL
+            'home': {
+                'en': 'https://docs.google.com/document/d/e/2PACX-1vR_YOUR_HOME_DOC_ID_EN/pub', // REPLACE WITH YOUR ACTUAL PUBLISHED GOOGLE DOC URL for English Home
+                'ko': 'https://docs.google.com/document/d/e/2PACX-1vR_YOUR_HOME_DOC_ID_KO/pub', // REPLACE WITH YOUR ACTUAL PUBLISHED GOOGLE DOC URL for Korean Home
+                'ja': 'https://docs.google.com/document/d/e/2PACX-1vR_YOUR_HOME_DOC_ID_JA/pub', // REPLACE WITH YOUR ACTUAL PUBLISHED GOOGLE DOC URL for Japanese Home
+                'es': 'https://docs.google.com/document/d/e/2PACX-1vR_YOUR_HOME_DOC_ID_ES/pub'  // REPLACE WITH YOUR ACTUAL PUBLISHED GOOGLE DOC URL for Spanish Home
+            },
+            'projects': {
+                'en': 'https://docs.google.com/document/d/e/2PACX-1vR_YOUR_PROJECTS_DOC_ID_EN/pub', // REPLACE WITH YOUR ACTUAL PUBLISHED GOOGLE DOC URL for English Projects
+                'ko': 'https://docs.google.com/document/d/e/2PACX-1vR_YOUR_PROJECTS_DOC_ID_KO/pub', // REPLACE WITH YOUR ACTUAL PUBLISHED GOOGLE DOC URL for Korean Projects
+                'ja': 'https://docs.google.com/document/d/e/2PACX-1vR_YOUR_PROJECTS_DOC_ID_JA/pub', // REPLACE WITH YOUR ACTUAL PUBLISHED GOOGLE DOC URL for Japanese Projects
+                'es': 'https://docs.google.com/document/d/e/2PACX-1vR_YOUR_PROJECTS_DOC_ID_ES/pub'  // REPLACE WITH YOUR ACTUAL PUBLISHED GOOGLE DOC URL for Spanish Projects
+            },
+            'trkey-keymap-configurator': {
+                'en': 'https://docs.google.com/document/d/e/2PACX-1vTKMlVJdMZLpRsVtcrg6x9wskp-McY6Q6vDAvlvV20Fn8Gb9KBUH_iA2MlFVidENjDLBiynX8yYUmYE/pub', // Your provided TrkEy Doc URL
+                'ko': 'https://docs.google.com/document/d/e/2PACX-1vR_YOUR_TRKEY_DOC_ID_KO/pub', // REPLACE with Korean TrkEy Doc URL
+                'ja': 'https://docs.google.com/document/d/e/2PACX-1vR_YOUR_TRKEY_DOC_ID_JA/pub', // REPLACE with Japanese TrkEy Doc URL
+                'es': 'https://docs.google.com/document/d/e/2PACX-1vR_YOUR_TRKEY_DOC_ID_ES/pub'  // REPLACE with Spanish TrkEy Doc URL
+            },
+            'about': {
+                'en': 'https://docs.google.com/document/d/e/2PACX-1vR_YOUR_ABOUT_DOC_ID_EN/pub', // REPLACE WITH YOUR ACTUAL PUBLISHED GOOGLE DOC URL for English About
+                'ko': 'https://docs.google.com/document/d/e/2PACX-1vR_YOUR_ABOUT_DOC_ID_KO/pub', // REPLACE WITH YOUR ACTUAL PUBLISHED GOOGLE DOC URL for Korean About
+                'ja': 'https://docs.google.com/document/d/e/2PACX-1vR_YOUR_ABOUT_DOC_ID_JA/pub', // REPLACE WITH YOUR ACTUAL PUBLISHED GOOGLE DOC URL for Japanese About
+                'es': 'https://docs.google.com/document/d/e/2PACX-1vR_YOUR_ABOUT_DOC_ID_ES/pub'  // REPLACE WITH YOUR ACTUAL PUBLISHED GOOGLE DOC URL for Spanish About
+            },
+            'contact': {
+                'en': 'https://docs.google.com/document/d/e/2PACX-1vR_YOUR_CONTACT_DOC_ID_EN/pub', // REPLACE WITH YOUR ACTUAL PUBLISHED GOOGLE DOC URL for English Contact
+                'ko': 'https://docs.google.com/document/d/e/2PACX-1vR_YOUR_CONTACT_DOC_ID_KO/pub', // REPLACE WITH YOUR ACTUAL PUBLISHED GOOGLE DOC URL for Korean Contact
+                'ja': 'https://docs.google.com/document/d/e/2PACX-1vR_YOUR_CONTACT_DOC_ID_JA/pub', // REPLACE WITH YOUR ACTUAL PUBLISHED GOOGLE DOC URL for Japanese Contact
+                'es': 'https://docs.google.com/document/d/e/2PACX-1vR_YOUR_CONTACT_DOC_ID_ES/pub'  // REPLACE WITH YOUR ACTUAL PUBLISHED GOOGLE DOC URL for Spanish Contact
+            }
             // To add a new page:
-            // 1. Publish your Google Doc to the web (File > Share > Publish to web).
-            // 2. Copy the "Link" provided (it will end with /pub).
-            // 3. Add a new key (e.g., 'new-page-id') and its corresponding /pub URL here.
-            //    Example: 'my-new-project': 'https://docs.google.com/document/d/e/2PACX-1vR_YOUR_NEW_PROJECT_DOC_ID/pub',
+            // 1. Create a Google Doc for each language (English, Korean, Japanese, Spanish).
+            // 2. Publish EACH Google Doc to the web (File > Share > Publish to web) and copy its /pub URL.
+            // 3. Add a new key (e.g., 'new-page-id') to the 'wikiPageUrls' object here.
+            //    The value for this key will be an object containing the /pub URLs for each language.
+            //    Example:
+            //    'my-new-project': {
+            //        'en': 'https://docs.google.com/document/d/e/2PACX-1vR_NEW_PROJECT_EN/pub',
+            //        'ko': 'https://docs.google.com/document/d/e/2PACX-1vR_NEW_PROJECT_KO/pub',
+            //        'ja': 'https://docs.google.com/document/d/e/2PACX-1vR_NEW_PROJECT_JA/pub',
+            //        'es': 'https://docs.google.com/document/d/e/2PACX-1vR_NEW_PROJECT_ES/pub'
+            //    },
+            // 4. Add a corresponding <li> with an <a> tag in the HTML sidebar navigation,
+            //    setting href="#your-page-id" and class="nav-link".
+            //    Example: <li><a href="#my-new-project" class="nav-link">My New Project</a></li>
         };
 
         // --- Core Logic ---
         const wikiContentDiv = document.getElementById('wiki-content');
-        // Select all nav links that have an href, excluding the dropdown trigger
         const navLinks = document.querySelectorAll('.main-nav a[href^="#"]');
-        
+        const langSelect = document.getElementById('lang-select');
+
+        let currentLang = 'en'; // Default language
         let currentPageId = 'home'; // Default page
 
         // Function to load content from a URL
-        async function loadContent(pageId) {
-            const url = wikiPageUrls[pageId];
+        async function loadContent(pageId, lang) {
+            const pageUrls = wikiPageUrls[pageId];
+            const url = pageUrls ? pageUrls[lang] : null;
 
             if (!url || url.includes('YOUR_')) { // Check if URL is placeholder
                 wikiContentDiv.innerHTML = `
                     <h1 style="color: var(--accent-red);">Page Not Found / URL Placeholder</h1>
-                    <p>The content for "${pageId}" is not available or its Google Doc URL is a placeholder (e.g., 'YOUR_HOME_DOC_ID').</p>
-                    <p>Please ensure you have published your Google Doc to the web and updated the <code>wikiPageUrls</code> object in the script with the correct <code>/pub</code> URL for this page.</p>
+                    <p>The content for "${pageId}" in ${lang.toUpperCase()} is not available or its Google Doc URL is a placeholder.</p>
+                    <p>Please ensure you have published your Google Doc to the web and updated the <code>wikiPageUrls</code> object in the script with the correct <code>/pub</code> URL for this page and language.</p>
                     <p>Navigate to a different page or update the code.</p>
                 `;
-                console.warn(`URL for page "${pageId}" not found or is a placeholder in wikiPageUrls.`);
+                console.warn(`URL for page "${pageId}" in language "${lang}" not found or is a placeholder in wikiPageUrls.`);
                 return;
             }
 
@@ -326,7 +354,7 @@
                 console.error('Failed to load content from Google Doc:', error);
                 wikiContentDiv.innerHTML = `
                     <h1 style="color: var(--accent-red);">Error Loading Page</h1>
-                    <p>Could not retrieve content from Google Docs for "${pageId}".</p>
+                    <p>Could not retrieve content from Google Docs for "${pageId}" in ${lang.toUpperCase()}.</p>
                     <p>Please ensure the Google Doc is published to the web and the URL is correct.</p>
                     <p>Error details: ${error.message}</p>
                 `;
@@ -336,28 +364,8 @@
             navLinks.forEach(link => {
                 if (link.getAttribute('href') === `#${pageId}`) {
                     link.classList.add('active');
-                    const parentLi = link.closest('li');
-                    if (parentLi && parentLi.parentElement.classList.contains('sub-nav')) {
-                         parentLi.parentElement.previousElementSibling.classList.add('active'); // Activate the 'Projects' dropdown trigger
-                    }
                 } else {
                     link.classList.remove('active');
-                    // Also ensure parent 'Projects' link is deactivated if no sub-link is active
-                    const parentLi = link.closest('li');
-                    if (parentLi && parentLi.parentElement.classList.contains('sub-nav')) {
-                        const projectsTrigger = parentLi.parentElement.previousElementSibling;
-                        if (projectsTrigger && projectsTrigger.classList.contains('dropdown-trigger')) {
-                            let anySubLinkActive = false;
-                            parentLi.parentElement.querySelectorAll('.sub-link').forEach(sub => {
-                                if (sub.classList.contains('active')) {
-                                    anySubLinkActive = true;
-                                }
-                            });
-                            if (!anySubLinkActive) {
-                                projectsTrigger.classList.remove('active');
-                            }
-                        }
-                    }
                 }
             });
         }
@@ -367,22 +375,36 @@
             link.addEventListener('click', (event) => {
                 event.preventDefault(); // Prevent default link behavior
                 const pageId = link.getAttribute('href').substring(1); // Get page ID from href (e.g., "home")
-                loadContent(pageId);
+                loadContent(pageId, currentLang);
             });
+        });
+
+        // Event listener for language selection
+        langSelect.addEventListener('change', (event) => {
+            currentLang = event.target.value;
+            localStorage.setItem('wikiLang', currentLang); // Save preference
+            loadContent(currentPageId, currentLang); // Reload current page with new language
         });
 
         // Handle initial page load and hash changes
         function handleInitialLoad() {
+            // Load saved language preference
+            const savedLang = localStorage.getItem('wikiLang');
+            if (savedLang && ['en', 'ko', 'ja', 'es'].includes(savedLang)) {
+                currentLang = savedLang;
+                langSelect.value = savedLang;
+            }
+
             // Load page based on URL hash, or default to 'home'
             const initialPageId = window.location.hash ? window.location.hash.substring(1) : 'home';
-            loadContent(initialPageId);
+            loadContent(initialPageId, currentLang);
         }
 
         // Listen for hash changes (e.g., if someone manually changes #home to #about)
         window.addEventListener('hashchange', () => {
             const newPageId = window.location.hash ? window.location.hash.substring(1) : 'home';
             if (newPageId !== currentPageId) { // Only reload if it's a different page
-                loadContent(newPageId);
+                loadContent(newPageId, currentLang);
             }
         });
 
