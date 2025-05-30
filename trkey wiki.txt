@@ -1,0 +1,336 @@
+﻿Trkey Keymap Configurator Wiki
+This document serves as a comprehensive guide to the Trkey Keymap Configurator, detailing its features, usage, and technical aspects.
+1. Home Page
+Trkey Keymap Configurator
+Welcome to the Trkey Keymap Configurator wiki! This tool helps you easily create and manage custom keymaps for your Trkey keyboard. Whether you're looking to streamline your workflow with powerful macros, define efficient key combinations, or set up custom shortcuts, this configurator makes it straightforward.
+What is Trkey Keymap Configurator?
+The Trkey Keymap Configurator is a web-based utility designed to provide a user-friendly interface for generating custom keymap configurations. Instead of manually editing complex configuration files, you can use this visual tool to:
+* Define and manage macros: Create sequences of keystrokes.
+* Set up efficient key combos: Assign specific actions to multiple key presses.
+* Organize custom shortcuts: Keep track of your personalized key assignments.
+* Generate ready-to-use output: Get the configuration code compatible with your Trkey keyboard firmware.
+Key Features
+* Intuitive Interface: Easily add, edit, and delete macros, combos, and shortcuts.
+* Real-time Preview: See your generated configuration as you build it.
+* Preset Loading: Start with pre-defined keymaps or load your own.
+* Drag & Drop: Assign shortcuts to keys by dragging them from the pool to the keymap grid.
+* Click-to-Map: Select a key on the grid, then click a shortcut to assign it.
+* AI-Powered Generation: Generate new shortcuts and macros using natural language prompts.
+* Web Serial API Integration: Directly connect to and upload keymaps to compatible Micropad devices (Chromium browsers only).
+* Local Storage Persistence: Save and load your keymap and macros directly in your browser.
+
+
+2. Getting Started
+Getting Started with Trkey Keymap Configurator
+This guide will walk you through the very first steps of using the Trkey Keymap Configurator.
+1. Accessing the Configurator
+The Trkey Keymap Configurator is a web-based application. You can access it in two main ways:
+* Directly from GitHub Pages:
+Simply open the following URL in your web browser:
+[YOUR_GITHUB_PAGES_URL_HERE]
+(e.g., https://your-username.github.io/your-repository-name/)
+* Running Locally:
+If you have downloaded the index.html file, you can open it directly in your web browser by double-clicking the index.html file.
+2. Interface Overview
+Upon opening the configurator, you'll see several main sections:
+   * Sidebar Navigation: On the left, switch between "KEYMAP", "MACROS", "SAVE + LOAD", "SETTINGS", and "KEY TESTER" tabs.
+   * Keymap Grid: The 3x3 grid representing your micropad, where you assign keys.
+   * Shortcut Pool: A collection of pre-defined and custom shortcuts you can assign.
+   * AI Generators: Sections for generating shortcuts and macros using AI.
+   * Live JSON Preview: In the "SETTINGS" tab, this box shows the raw configuration code that will be generated for your Trkey keyboard. It updates in real-time as you make changes.
+3. Your First Keymap
+Let's create a simple keymap:
+   1. Navigate to KEYMAP tab: Ensure you are on the "KEYMAP" tab in the sidebar.
+   2. Select a Layer: Click on the layer buttons (e.g., 0, 1, 2, 3) above the keymap grid to select the layer you want to edit. Layer 0 is the default.
+   3. Assign a Shortcut (Drag & Drop):
+   * In the "SHORTCUTS" section below the keymap grid, find a shortcut you want to use (e.g., "Move" from the "BASIC" category).
+   * Click and drag this shortcut. You'll see a ghost image of it.
+   * Drag it over one of the empty key slots on the 3x3 keymap grid.
+   * Release the mouse button to drop the shortcut onto the key. The key will now display the shortcut's description.
+   4. Assign a Shortcut (Click-to-Map):
+   * Click an empty key on the 3x3 keymap grid. A modal will appear confirming the key is selected.
+   * Now, click any shortcut from the "SHORTCUTS" pool. The selected shortcut will be immediately mapped to the key you clicked earlier.
+   5. Add Your First Macro:
+   * Navigate to the "MACROS" tab in the sidebar.
+   * Click the "+ Add New Macro" button.
+   * A modal window will appear.
+   * In the "Macro Name" field, type HELLO_WORLD.
+   * In the "Macro Sequence" field, type Hello, World!{KC_ENTER}.
+   * Click "Create Macro."
+   * You should now see your HELLO_WORLD macro in the list.
+   6. Assign the Macro to a Key:
+   * Go back to the "KEYMAP" tab.
+   * In the "SHORTCUTS" section, select the "MACRO" category. You should see your HELLO_WORLD macro listed.
+   * Drag and drop (or click-to-map) this macro onto an empty key on your 3x3 grid.
+   7. Observe the Output:
+   * Navigate to the "SETTINGS" tab.
+   * Look at the "Current Keymap JSON Preview" box. You should see your newly defined key assignments and macros reflected in the generated configuration.
+You've successfully started using the Trkey Keymap Configurator! Explore the other sections below for more advanced usage.
+3. Features & Usage
+3.1. Defining Macros
+Macros are powerful tools that allow you to execute a sequence of keystrokes or actions with a single trigger. This page explains how to effectively create and manage macros in the Trkey Keymap Configurator.
+What is a Macro?
+In Trkey, a macro is a predefined sequence of key presses, text inputs, or system commands that can be assigned to a single key or key combination on your keyboard. When triggered, the macro will automatically perform all the steps in its sequence.
+Adding a New Macro
+   1. Navigate to MACROS tab: Click on the "MACROS" tab in the sidebar.
+   2. Click "+ Add New Macro": A "Create New Macro" modal will pop up.
+   3. Macro Name:
+   * Enter a unique, descriptive name for your macro (e.g., EMAIL_SIGNATURE, GIT_COMMIT). This name will be used in the generated keymap.
+   * Best Practice: Use UPPER_SNAKE_CASE for macro names, as they will be converted to this format in the final JSON.
+   4. Description (optional): Provide a short description for your own reference.
+   5. Macro Sequence:
+   * Type the sequence of keystrokes or text that this macro should perform.
+   * Plain Text: Simply type the text you want the macro to output.
+   * Special Keys: Use specific syntax for special keys. These are based on QMK keycodes:
+   * {KC_ENTER}: Enter key
+   * {KC_TAB}: Tab key
+   * {KC_ESC}: Escape key
+   * {KC_GRV}: Grave accent (backtick)
+   * {KC_SPC}: Spacebar
+   * {KC_BSPC}: Backspace
+   * {KC_UP}, {KC_DOWN}, {KC_LEFT}, {KC_RIGHT}: Arrow keys
+   * {KC_LALT}, {KC_LCTL}, {KC_LSFT}, {KC_LGUI}: Left modifiers (Alt, Ctrl, Shift, GUI/Win/Cmd)
+   * {KC_RALT}, {KC_RCTL}, {KC_RSFT}, {KC_RGUI}: Right modifiers
+   * {KC_DEL}: Delete
+   * {KC_PGUP}, {KC_PGDN}: Page Up/Down
+   * {KC_HOME}, {KC_END}: Home/End
+   * {KC_F1} - {KC_F24}: Function keys
+   * {KC_MPLY}: Play/Pause Media
+   * {KC_MNXT}: Next Track Media
+   * {KC_MPRV}: Previous Track Media
+   * {KC_MUTE}: Mute Media
+   * {KC_VOLD}: Volume Down Media
+   * {KC_VOLU}: Volume Up Media
+   * {KC_MSTP}: Media Stop
+   * {KC_PSCR}: Print Screen
+   * {KC_SCRL}: Scroll Lock
+   * {KC_PAUS}: Pause/Break
+   * {KC_CAPS}: Caps Lock
+   * {KC_NUM}: Num Lock
+   * {KC_KPDIV}, {KC_KPMUL}, {KC_KPSUB}, {KC_KPADD}: Keypad operators
+   * {KC_KP0} - {KC_KP9}: Keypad numbers
+   * {KC_KPDOT}: Keypad Decimal
+   * {KC_KPENT}: Keypad Enter
+   * {KC_COMM}: Comma (,)
+   * {KC_DOT}: Period (.)
+   * {KC_SLSH}: Slash (/)
+   * {KC_BSLS}: Backslash (\)
+   * {KC_SCLN}: Semicolon (;)
+   * {KC_QUOT}: Single Quote (')
+   * {KC_GRV}: Grave/Tilde (` / ~)
+   * {KC_LBRC}: Left Bracket ([)
+   * {KC_RBRC}: Right Bracket (])
+   * {KC_MINS}: Minus (-)
+   * {KC_EQL}: Equals (=)
+   * {KC_AMPR}: Ampersand (&)
+   * {KC_PIPE}: Pipe (|)
+   * {KC_EXLM}: Exclamation Mark (!)
+   * {KC_AT}: At Symbol (@)
+   * {KC_HASH}: Hash/Pound (#)
+   * {KC_DLR}: Dollar Sign ($)
+   * {KC_PERC}: Percent (%)
+   * {KC_CIRC}: Caret (^)
+   * {KC_ASTR}: Asterisk (*)
+   * {KC_LPRN}: Left Parenthesis (()
+   * {KC_RPRN}: Right Parenthesis ())
+   * {KC_UNDS}: Underscore (_)
+   * {KC_PLUS}: Plus (+)
+   * {KC_LCBR}: Left Curly Brace ({)
+   * {KC_RCBR}: Right Curly Brace (})
+   * {KC_COLN}: Colon (:)
+   * {KC_DQUO}: Double Quote (")
+   * {KC_LT}: Less Than (<)
+   * {KC_GT}: Greater Than (>)
+   * {KC_QUES}: Question Mark (?)
+   * {KC_TILD}: Tilde (~)
+   * {KC_PIPE}: Pipe (|)
+   * {KC_AMPR}: Ampersand (&)
+   * {KC_EXLM}: Exclamation (!)
+   * Combinations: To hold down a modifier with another key, concatenate them: {KC_LCTL}{KC_Z} for Ctrl+Z.
+   * Delays: You can insert delays within a macro sequence using {Delay N} where N is the delay in milliseconds. E.g., Hello{Delay 100}World!.
+   6. Save: Click the "Create Macro" button to add the macro to your list.
+Editing Existing Macros
+   1. Select Macro: In the list of defined macros, click the "Edit" button next to the macro you wish to modify.
+   2. Make Changes: The "Edit Macro" modal will reappear, pre-filled with the macro's current information. Make your desired changes to the name, description, or sequence.
+   3. Save Changes: Click "Save Changes" to update the macro.
+Deleting Macros
+   1. Select Macro: In the list of defined macros, click the "Delete" button next to the macro you wish to remove.
+   2. Confirm: A confirmation modal will appear asking if you are sure. Click "Confirm" to permanently delete the macro.
+3.2. Managing Shortcuts
+The configurator provides a pool of pre-defined and custom shortcuts that you can assign to your keymap.
+Shortcut Categories
+Shortcuts are organized into categories for easier navigation (e.g., "BASIC", "WINDOWS_SHORTCUTS", "MACOS_SHORTCUTS", "MEDIA", "LAYERS", etc.). You can switch between categories using the buttons above the shortcut display area.
+Adding a New Custom Shortcut
+   1. Navigate to KEYMAP tab: Click on the "KEYMAP" tab in the sidebar.
+   2. Select a Category: Choose the category where you want to add your custom shortcut (e.g., "BASIC" or create a new "CUSTOM" category if you wish).
+   3. Click "+ Add Shortcut": This button is located at the end of the shortcut list for the currently selected category.
+   4. Shortcut Combo: Enter the key combination (e.g., Ctrl+Alt+Del, F13).
+   5. Description: Provide a brief description of what this shortcut does.
+   6. Save: Click "Add Shortcut" to add it to the selected category.
+Assigning Shortcuts to Keys
+You have two primary methods for assigning shortcuts to keys on your 3x3 grid:
+   1. Drag & Drop:
+   * Click and hold on any shortcut from the "SHORTCUTS" pool.
+   * Drag it over the desired key position on your 3x3 keymap grid.
+   * Release the mouse button to assign the shortcut.
+   2. Click-to-Map:
+   * First, click on an empty (or existing) key on your 3x3 keymap grid. The key will be highlighted with a red border, and a modal will confirm its selection.
+   * Next, click on any shortcut from the "SHORTCUTS" pool. The selected shortcut will be immediately assigned to the previously clicked key on the grid.
+Reordering Keys on the Grid
+You can also reorder keys within the 3x3 keymap grid using drag and drop:
+   1. Click and hold on a key on the 3x3 grid.
+   2. Drag it to another key's position on the grid.
+   3. Release the mouse button to swap the contents of the two keys.
+3.3. AI-Powered Generation
+The configurator includes AI features to help you generate new shortcuts and macros based on your natural language prompts.
+AI-Powered Shortcut Generator
+   1. Navigate to KEYMAP tab: Ensure you are on the "KEYMAP" tab.
+   2. Locate AI Shortcut Generator: Scroll down to the "AI-POWERED SHORTCUT GENERATOR" section.
+   3. Enter Prompt: In the text area, describe the shortcuts you need (e.g., "common shortcuts for web browsing in macOS", "media controls for Windows").
+   4. Click "Generate with AI": The AI will process your request and generate a list of shortcuts.
+   5. Review & Use: The generated shortcuts will be added to a new category called "AI GENERATED" in your shortcut pool. You can then drag and drop or click-to-map these shortcuts to your keymap.
+AI-Powered Macro Generator
+   1. Navigate to MACROS tab: Click on the "MACROS" tab.
+   2. Locate AI Macro Generator: Scroll down to the "AI-POWERED MACRO GENERATOR" section.
+   3. Enter Prompt: In the text area, describe the macros you need (e.g., "macro for opening calculator", "email signature macro").
+   4. Click "Generate with AI": The AI will process your request and generate new macros.
+   5. Review & Use: The generated macros will be added directly to your list of defined macros. You can then assign them to keys from the "MACRO" category in the "SHORTCUTS" pool.
+Note: AI features require an internet connection and a valid Gemini API key configured in the application's code.
+4. Configuration & Export
+Exporting Your Trkey Keymap
+Once you've defined your macros, combos, and shortcuts, the Trkey Keymap Configurator provides a ready-to-use configuration that you can integrate with your Trkey keyboard firmware.
+Understanding the "Current Keymap JSON Preview"
+Navigate to the SETTINGS tab. The large text area labeled "Current Keymap JSON Preview" displays the raw configuration data generated by your current selections. This output is dynamically updated in real-time as you add, edit, or delete items.
+   * Format: The output is in a JSON format, designed to be easily parsable by your Trkey keyboard's firmware (e.g., QMK).
+   * Sections: You'll generally see sections for:
+   * layers: Your defined keymap layers (e.g., 0, 1, 2, 3), with each key represented by its macro reference.
+   * macros: Your defined macros with their names (e.g., MACRO_HELLO_WORLD) and sequences.
+   * combos: An empty array for now, as combo functionality is not yet fully integrated into the export.
+How to Export Your Keymap
+   1. Review the Output: Carefully examine the "Current Keymap JSON Preview" to ensure it matches your desired configuration.
+   2. Export as JSON File:
+   * Click the "Export Keymap JSON" button.
+   * This will download a trkey_config.json file to your computer containing the entire configuration.
+   3. Integrate with Your Trkey Keyboard:
+   * [Crucial Step]: Open the downloaded trkey_config.json file. You will need to copy its contents and paste them into the appropriate configuration file for your Trkey keyboard's firmware. This is typically a config.json, keymap.json, or similar file located in your keyboard's firmware source code.
+   * Example Path: your_keyboard_firmware/src/keymaps/YOUR_KEYMAP_NAME/config.json
+   * Specific Instructions: Refer to your Trkey keyboard's specific firmware documentation for precise instructions on where to place this JSON data. You might need to replace an existing keymap definition or add it as a new section.
+   4. Flash Your Firmware:
+   * After updating the configuration file, you will need to compile and flash your Trkey keyboard's firmware to apply the changes.
+   * [Link to your Trkey keyboard's flashing guide or relevant documentation for firmware updates].
+Important: Always back up your original firmware files before making any modifications.
+Loading JSON from Text Area
+You can also load an existing Trkey keymap configuration by pasting its JSON directly into the configurator:
+   1. Navigate to SETTINGS tab: Click on the "SETTINGS" tab in the sidebar.
+   2. Paste JSON: In the text area under "Load JSON from Text Area," paste your QMK keymap JSON.
+   3. Click "Load JSON": The configurator will parse the JSON and update the keymap grid and macro list accordingly.
+Connecting and Uploading to Micropad (Web Serial API)
+This feature allows direct communication with your Micropad device for uploading keymaps.
+   1. Navigate to SETTINGS tab: Click on the "SETTINGS" tab in the sidebar.
+   2. Click "Connect to Micropad":
+   * A browser prompt will appear asking you to select a serial port. Choose your Micropad device.
+   * If successful, a modal will confirm the connection. If it fails, ensure your device is connected and drivers are installed.
+   * Note: This feature requires a Chromium-based browser (e.g., Google Chrome, Microsoft Edge) and Web Serial API support.
+   3. Click "Upload Keymap to Device":
+   * Once connected, this button will become active.
+   * Clicking it will send your current keymap configuration directly to the connected Micropad.
+   * A success or failure modal will appear. The device should typically restart after a successful upload.
+   4. Click "Disconnect Micropad": When you are finished, click this button to safely disconnect from your device.
+5. Troubleshooting & FAQ
+Troubleshooting & FAQ
+This page provides solutions to common issues you might encounter while using the Trkey Keymap Configurator.
+Frequently Asked Questions
+Q: My macros aren't working on my keyboard after flashing the firmware.
+A:
+   * Double-check your firmware: Ensure you correctly updated the config.json (or equivalent) file in your keyboard's firmware with the output from the configurator.
+   * Re-flash firmware: Sometimes a re-flash resolves inconsistencies.
+   * Macro syntax: Verify that the macro sequences in the configurator use the correct syntax for special keys (e.g., {KC_ENTER} vs. just Enter). Refer to the Defining Macros section.
+   * Keyboard compatibility: Confirm that your Trkey keyboard model and firmware version fully support the macro and combo features generated by this configurator.
+Q: The "Preview Output" isn't updating.
+A:
+   * Ensure your browser's JavaScript is enabled.
+   * Try refreshing the page (F5 or Ctrl+R).
+   * If you're running it locally, make sure all associated JavaScript and CSS are loaded correctly within the index.html file.
+Q: I deleted a macro by mistake. Can I undo it?
+A: Unfortunately, the configurator does not currently have an "undo" feature for deletions. You will need to re-create the macro or reload a previous configuration/preset if you have one saved.
+Q: The configurator looks broken / is not displaying correctly.
+A:
+   * Browser compatibility: This configurator is designed for modern web browsers like Chrome, Firefox, Edge, and Safari. Ensure your browser is up to date.
+   * Clear cache: Try clearing your browser's cache for the GitHub Pages URL.
+   * Zoom level: Ensure your browser's zoom level is set to 100%.
+Q: Can I save my current configuration to a file on my computer?
+A: Yes, you can use the "Export Keymap JSON" button to download your current configuration as a .json file. You can then save this file anywhere on your computer.
+Q: Why are the AI features not working?
+A:
+   * API Key: Ensure you have replaced the placeholder const apiKey = ""; in the HTML file's JavaScript with your actual Gemini API key.
+   * Internet Connection: The AI features require an active internet connection to communicate with the Gemini API.
+   * CORS: If running the HTML file directly from your local file system (e.g., file:///C:/.../index.html), your browser might block API requests due to Cross-Origin Resource Sharing (CORS) policies. Try hosting the file on a simple local server, or use GitHub Pages.
+Q: Why can't I connect to my Micropad device?
+A:
+   * Browser Support: The Web Serial API is primarily supported by Chromium-based browsers (Google Chrome, Microsoft Edge). It will not work in Firefox or Safari.
+   * Device Drivers: Ensure you have the necessary USB drivers installed for your Micropad device.
+   * Device State: Your Micropad might need to be in a specific programming mode or state to be discoverable via Web Serial. Refer to your Micropad's documentation.
+   * Permissions: You must grant your browser permission to access the serial port when prompted.
+Reporting Bugs
+If you encounter an issue not listed here, please consider reporting it:
+   * GitHub Issues: [Link to your GitHub repository's "Issues" tab, e.g., https://github.com/your-username/your-repository-name/issues]
+When reporting, please include:
+      * A clear description of the problem.
+      * Steps to reproduce the issue.
+      * Your browser name and version.
+      * Any relevant screenshots or error messages from the browser console.
+6. Technical Details
+Technical Overview
+This page provides a high-level overview of the Trkey Keymap Configurator's technical structure for those interested in its inner workings or contributing to its development.
+Project Structure
+The Trkey Keymap Configurator is a single-page web application built primarily with:
+      * HTML (index.html): The main structure of the web page, including all React components, CSS, and JavaScript embedded directly for single-file deployment.
+      * CSS: Tailwind CSS is used for styling, loaded via CDN. Custom scrollbar styles are also embedded.
+      * JavaScript (React): The core logic for the application, handling user interaction, state management, and output generation. JSX syntax is used, which is transpiled in the browser by Babel Standalone.
+Key Components (JavaScript/React)
+The application is structured around several React functional components:
+      * App: The root component that manages the overall application state, including:
+      * keymap: An object representing the 3x3 grid for each layer.
+      * activeLayer: The currently selected layer for editing.
+      * shortcutPool: An object containing all available shortcuts, categorized (including dynamically added "MACRO" and "AI GENERATED" categories).
+      * macros: An array of user-defined macro objects.
+      * showModal, showMacroFormModal, showConfirmationModal, showAddShortcutModal: States for controlling modal visibility.
+      * selectedKeyForMapping: Stores the coordinates of a keymap cell selected for click-to-map.
+      * connectedPort: Stores the Web Serial API port object if a device is connected.
+      * aiPrompt, aiMacroPrompt: User input for AI generation.
+      * isGeneratingAiShortcuts, isGeneratingAiMacros: Loading states for AI features.
+      * KeyComponent: A reusable component representing a single key on the micropad grid or a shortcut in the pool. It displays the combo and description, and handles drag-and-drop events.
+      * Modal Components:
+      * Modal: A generic modal component for displaying information or error messages.
+      * MacroFormModal: Specific modal for adding or editing macro details.
+      * ConfirmationModal: Used for user confirmations (e.g., before deleting a macro).
+      * AddShortcutModal: For adding new custom shortcuts to the pool.
+How Output is Generated
+      1. State Management: User interactions (e.g., assigning a shortcut, defining a macro) update the application's internal React state (e.g., the keymap object, the macros array).
+      2. useEffect Hooks: React's useEffect hooks are used to perform side effects, such as:
+      * Loading/saving profiles to localStorage.
+      * Updating the "MACRO" category in shortcutPool when macros change.
+      * Attaching/detaching keyboard event listeners for the "KEY TESTER."
+      3. JSON Transformation: When the relevant state changes, the exportKeymap function (or similar logic for the preview) transforms the internal JavaScript objects into the required JSON format for the Trkey keyboard firmware.
+      * Macro names are sanitized (uppercased, spaces replaced with underscores, special characters removed) to conform to typical firmware naming conventions.
+      * The 3x3 keymap grid is flattened into a 9-element array for each layer.
+      4. JSON.stringify(): The transformed JavaScript object is then converted into a readable JSON string using JSON.stringify(..., null, 2) for pretty-printing.
+      5. Display & Download: The resulting JSON string is displayed in the "Current Keymap JSON Preview" <pre> tag. When "Export Keymap JSON" is clicked, this string is used to create a Blob and trigger a file download.
+Web Serial API Integration
+      * The connectToDevice, disconnectDevice, and uploadKeymapToConnectedDevice functions handle interaction with physical devices.
+      * They use navigator.serial.requestPort(), port.open(), port.writable.getWriter(), and writer.write() to communicate with the serial port.
+      * Data is sent as a UTF-8 encoded JSON string.
+Local Development (for Contributors)
+To run and modify this application locally:
+      1. Save the File: Save the entire HTML content as index.html.
+      2. Open in Browser: Open index.html directly in a modern web browser (preferably Chrome or Edge for Web Serial API support).
+      3. Edit Code: You can directly edit the JavaScript code within the <script type="text/babel"> tags and refresh your browser to see changes.
+Note: Since this is a single-file setup using Babel Standalone, there's no traditional npm install or npm start command. All dependencies (React, ReactDOM, Babel) are loaded via CDNs.
+7. Contributing
+Contributing to Trkey Keymap Configurator
+We welcome contributions to improve the Trkey Keymap Configurator! Whether it's reporting bugs, suggesting features, or submitting code, your help is appreciated.
+But please contact on https://discord.gg/zJr3sUYY4g
+Code Style
+      * Maintain consistency with the existing code's React functional component style, state management, and Tailwind CSS class usage.
+      * Add comments where necessary to explain complex logic.
+We appreciate your contributions!
